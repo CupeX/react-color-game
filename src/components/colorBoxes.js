@@ -1,35 +1,30 @@
 import './index.css';
+import { nanoid } from 'nanoid';
 
 const ColorBoxes = props => {
   const background = props.background;
-  const fake = props.fake;
-  const trueColor = props.true;
-  const orderNumber = props.number;
+  const trueColor = props.trueColor;
 
-  const colorChecker = (x, y) => {
-    if (orderNumber === +trueColor) {
-      alert('you get it!');
+  const colorChecker = x => {
+    console.log(x, trueColor);
+    if (x === trueColor) {
+      alert(`You get it! ${trueColor}`);
     } else {
-      alert('wrong!');
-    }
-  };
-
-  const trueContent = () => {
-    if (orderNumber === +trueColor) {
-      return <span>{background}</span>;
-    } else {
-      return <span>{fake}</span>;
+      alert('You are wrong!');
     }
   };
 
   return (
     <div className="box-container">
-      <button
-        className="box"
-        style={{ background: background }}
-        onClick={() => colorChecker(background)}
-      ></button>
-      <span>{trueContent()}</span>
+      {background.map(x => (
+        <div key={nanoid()}>
+          <button
+            className="box"
+            style={{ background: x }}
+            onClick={() => colorChecker(x)}
+          ></button>
+        </div>
+      ))}
     </div>
   );
 };

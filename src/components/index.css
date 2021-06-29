@@ -1,6 +1,5 @@
 .box-container {
   display: flex;
-  flex-flow: column;
 }
 
 .box {
