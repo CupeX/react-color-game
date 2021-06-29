@@ -22,7 +22,6 @@ const randomer = length => {
 };
 
 const MainVisual = () => {
-  const [colors, setColors] = useState([]);
   const [trueColor, setTrueColor] = useState('');
 
   const color1 = hexGen(6);
@@ -33,7 +32,6 @@ const MainVisual = () => {
   const color6 = hexGen(6);
 
   useEffect(() => {
-    setColors([color1, color2, color3, color4, color5, color6]);
     setTrueColor(randomer(1));
   }, []);
 
