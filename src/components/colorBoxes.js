@@ -3,13 +3,22 @@ import './index.css';
 const ColorBoxes = props => {
   const background = props.background;
   const fake = props.fake;
+  const trueColor = props.true;
+  const orderNumber = props.number;
 
   const colorChecker = (x, y) => {
-    console.log(x, y);
-    if (typeof x == 'undefined') {
+    if (orderNumber === +trueColor) {
       alert('you get it!');
     } else {
       alert('wrong!');
+    }
+  };
+
+  const trueContent = () => {
+    if (orderNumber === +trueColor) {
+      return <span>{background}</span>;
+    } else {
+      return <span>{fake}</span>;
     }
   };
 
@@ -18,10 +27,9 @@ const ColorBoxes = props => {
       <button
         className="box"
         style={{ background: background }}
-        onClick={() => colorChecker(fake, background)}
+        onClick={() => colorChecker(background)}
       ></button>
-      <span>{fake ? fake : background}</span>
-      <span>{background}</span>
+      <span>{trueContent()}</span>
     </div>
   );
 };
