@@ -37,7 +37,6 @@ const MainVisual = () => {
   };
 
   const resetHandler = () => {
-    setCounter(3);
     getNewColors();
   };
 
@@ -55,11 +54,16 @@ const MainVisual = () => {
           lvl 3
         </ButtonComponent>
 
-        <ButtonComponent onClick={() => resetHandler(3)} color="danger">
+        <ButtonComponent onClick={() => resetHandler()} color="danger">
           RESET
         </ButtonComponent>
       </div>
-      <ColorBoxes background={colors} trueColor={trueColor} />
+      <ColorBoxes
+        reset={() => resetHandler()}
+        boxes={counter}
+        background={colors}
+        trueColor={trueColor}
+      />
     </div>
   );
 };
