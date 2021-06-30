@@ -22,11 +22,8 @@ const MainVisual = () => {
   }, [counter]);
 
   const getNewColors = () => {
-    const newColors = [];
-    for (let i = 0; i < counter; i++) {
-      const color = hexGen(6);
-      newColors.push(color);
-    }
+    const newColors = Array.from(Array(counter).keys()).map(() => hexGen(6));
+
     const randomer = newColors[Math.floor(Math.random() * newColors.length)];
     setTrueColor(randomer);
     setColors(newColors);
@@ -41,7 +38,7 @@ const MainVisual = () => {
   };
 
   return (
-    <div className="container w-25 d-flex flex-column mt-5">
+    <div className="container d-flex flex-column mt-5 ">
       <h3>Guess the color: {trueColor}</h3>
       <div className="d-flex justify-content-between border-bottom border-dark pb-3">
         <ButtonComponent onClick={() => lvlHandler(3)} color="success">
@@ -55,11 +52,11 @@ const MainVisual = () => {
         </ButtonComponent>
 
         <ButtonComponent onClick={() => resetHandler()} color="danger">
-          RESET
+          RESET LVL
         </ButtonComponent>
       </div>
       <ColorBoxes
-        reset={() => resetHandler()}
+        resetLvl={() => resetHandler()}
         boxes={counter}
         background={colors}
         trueColor={trueColor}

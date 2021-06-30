@@ -1,8 +1,9 @@
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
+import ButtonComponent from './ButtonComponent';
 
 const ColorBoxes = props => {
-  const reset = props.reset;
+  const resetLvl = props.resetLvl;
   const background = props.background;
   const boxes = props.boxes;
   const [newList, setNewList] = useState([]);
@@ -15,26 +16,34 @@ const ColorBoxes = props => {
   }, [background]);
 
   const colorChecker = x => {
-    const index = background.indexOf(x);
     if (x === trueColor) {
-      alert(`Good job! You get it after ${counter} attempts`);
+      alert(
+        `Good job! You get it after ${counter} attempts, and recive ${
+          boxes - counter + 1
+        } points!`
+      );
       setCounter(1);
       setScore(score + boxes - counter + 1);
-      reset();
+      resetLvl();
     } else {
-      if (index > -1) {
-        background.splice(index, 1);
-        const updateList = [...background];
-        setNewList(updateList);
-      }
+      const updatedList = newList.filter(item => x !== item);
+      setNewList(updatedList);
       setCounter(counter + 1);
-      console.log(counter);
     }
+  };
+
+  const resetScore = () => {
+    setScore(0);
   };
 
   return (
     <div>
-      <h2>score: {score}</h2>
+      <div className="d-flex justify-content-between my-3">
+        <h2>score: {score}</h2>
+        <ButtonComponent onClick={resetScore} color="danger">
+          reset score
+        </ButtonComponent>
+      </div>
       <div className="d-flex flex-wrap justify-content-between">
         {newList.map(x => (
           <div key={nanoid()}>
