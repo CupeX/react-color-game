@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import ButtonComponent from './ButtonComponent';
 import ColorBoxes from './colorBoxes';
 
 const hexGen = length => {
@@ -33,29 +34,29 @@ const MainVisual = () => {
 
   const lvlHandler = prop => {
     setCounter(prop);
-    getNewColors();
   };
 
   const resetHandler = () => {
     setCounter(3);
-    getNewColors();
   };
 
   return (
-    <div className="main">
-      <div className="btn-wrapper">
-        <button onClick={() => lvlHandler(3)} className="btn lvl-btn">
+    <div className="container w-25 d-flex flex-column mt-5">
+      <h3>Guess the color: {trueColor}</h3>
+      <div className="d-flex justify-content-between border-bottom border-dark pb-3">
+        <ButtonComponent onClick={() => lvlHandler(3)} color="success">
           lvl 1
-        </button>
-        <button onClick={() => lvlHandler(6)} className="btn lvl-btn">
+        </ButtonComponent>
+        <ButtonComponent onClick={() => lvlHandler(6)} color="success">
           lvl 2
-        </button>
-        <button onClick={() => lvlHandler(9)} className="btn lvl-btn">
+        </ButtonComponent>
+        <ButtonComponent onClick={() => lvlHandler(9)} color="success">
           lvl 3
-        </button>
-        <button onClick={() => resetHandler()} className="btn reset-btn">
+        </ButtonComponent>
+
+        <ButtonComponent onClick={() => resetHandler(3)} color="danger">
           RESET
-        </button>
+        </ButtonComponent>
       </div>
       <ColorBoxes background={colors} trueColor={trueColor} />
     </div>

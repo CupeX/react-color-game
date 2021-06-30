@@ -1,4 +1,3 @@
-import './index.css';
 import { nanoid } from 'nanoid';
 
 const ColorBoxes = props => {
@@ -15,11 +14,11 @@ const ColorBoxes = props => {
   };
 
   return (
-    <div className="box-container">
+    <div className="d-flex flex-wrap justify-content-between">
       {background.map(x => (
         <div key={nanoid()}>
           <button
-            className="box"
+            className="box p-5 my-3"
             style={{ background: x }}
             onClick={() => colorChecker(x)}
           ></button>
