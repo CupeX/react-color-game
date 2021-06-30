@@ -38,7 +38,7 @@ const MainVisual = () => {
   };
 
   return (
-    <div className="container d-flex flex-column mt-5 ">
+    <div className="container d-flex flex-column mt-5 col-xl-4 col-lg-6">
       <h3>Guess the color: {trueColor}</h3>
       <div className="d-flex justify-content-between border-bottom border-dark pb-3">
         <ButtonComponent onClick={() => lvlHandler(3)} color="success">

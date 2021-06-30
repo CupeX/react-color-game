@@ -12,6 +12,10 @@ const ColorBoxes = props => {
   const trueColor = props.trueColor;
 
   useEffect(() => {
+    setScore(+window.localStorage.getItem('score'));
+  }, []);
+
+  useEffect(() => {
     setNewList(background);
   }, [background]);
 
@@ -34,19 +38,27 @@ const ColorBoxes = props => {
 
   const resetScore = () => {
     setScore(0);
+    window.localStorage.removeItem('score');
+  };
+
+  const saveData = () => {
+    window.localStorage.setItem('score', score);
   };
 
   return (
     <div>
       <div className="d-flex justify-content-between my-3">
         <h2>score: {score}</h2>
+        <ButtonComponent onClick={saveData} color="success">
+          save score
+        </ButtonComponent>
         <ButtonComponent onClick={resetScore} color="danger">
           reset score
         </ButtonComponent>
       </div>
       <div className="d-flex flex-wrap justify-content-between">
         {newList.map(x => (
-          <div key={nanoid()}>
+          <div key={nanoid()} className="col-4">
             <button
               className="box p-5 my-3"
               style={{ background: x }}
