@@ -1,5 +1,7 @@
 .box-container {
   display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .box {
@@ -13,7 +15,32 @@
 }
 
 .main {
-  margin-top: 40px;
   display: flex;
+  flex-flow: column;
   justify-content: center;
+  max-width: 400px;
+  margin: 50px auto;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 2px solid grey;
+}
+
+.btn {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.lvl-btn {
+  background-color: rgb(18, 218, 18);
+}
+.reset-btn {
+  background-color: red;
 }

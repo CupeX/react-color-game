@@ -12,28 +12,51 @@ const hexGen = length => {
 };
 
 const MainVisual = () => {
+  const [counter, setCounter] = useState(3);
   const [colors, setColors] = useState([]);
   const [trueColor, setTrueColor] = useState('');
 
-  const color1 = hexGen(6);
-  const color2 = hexGen(6);
-  const color3 = hexGen(6);
-  const color4 = hexGen(6);
-  const color5 = hexGen(6);
-  const color6 = hexGen(6);
-
   useEffect(() => {
-    setColors([color1, color2, color3, color4, color5, color6]);
-  }, []);
+    getNewColors();
+  }, [counter]);
 
-  useEffect(() => {
+  const getNewColors = () => {
+    const newColors = [];
+    for (let i = 0; i < counter; i++) {
+      const color = hexGen(6);
+      newColors.push(color);
+    }
+    const randomer = newColors[Math.floor(Math.random() * newColors.length)];
     setTrueColor(randomer);
-  }, [trueColor]);
+    setColors(newColors);
+  };
 
-  const randomer = colors[Math.floor(Math.random() * colors.length)];
+  const lvlHandler = prop => {
+    setCounter(prop);
+    getNewColors();
+  };
+
+  const resetHandler = () => {
+    setCounter(3);
+    getNewColors();
+  };
 
   return (
     <div className="main">
+      <div className="btn-wrapper">
+        <button onClick={() => lvlHandler(3)} className="btn lvl-btn">
+          lvl 1
+        </button>
+        <button onClick={() => lvlHandler(6)} className="btn lvl-btn">
+          lvl 2
+        </button>
+        <button onClick={() => lvlHandler(9)} className="btn lvl-btn">
+          lvl 3
+        </button>
+        <button onClick={() => resetHandler()} className="btn reset-btn">
+          RESET
+        </button>
+      </div>
       <ColorBoxes background={colors} trueColor={trueColor} />
     </div>
   );
