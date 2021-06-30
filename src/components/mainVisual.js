@@ -38,6 +38,7 @@ const MainVisual = () => {
 
   const resetHandler = () => {
     setCounter(3);
+    getNewColors();
   };
 
   return (
