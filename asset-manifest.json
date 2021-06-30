@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/react-color-game/static/css/main.8bcbd900.chunk.css",
-    "main.js": "/react-color-game/static/js/main.2f567010.chunk.js",
-    "main.js.map": "/react-color-game/static/js/main.2f567010.chunk.js.map",
+    "main.js": "/react-color-game/static/js/main.27c764b5.chunk.js",
+    "main.js.map": "/react-color-game/static/js/main.27c764b5.chunk.js.map",
     "runtime-main.js": "/react-color-game/static/js/runtime-main.0a40911d.js",
     "runtime-main.js.map": "/react-color-game/static/js/runtime-main.0a40911d.js.map",
     "static/css/2.d45d6843.chunk.css": "/react-color-game/static/css/2.d45d6843.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.d45d6843.chunk.css",
     "static/js/2.9cab5bfc.chunk.js",
     "static/css/main.8bcbd900.chunk.css",
-    "static/js/main.2f567010.chunk.js"
+    "static/js/main.27c764b5.chunk.js"
   ]
 }
