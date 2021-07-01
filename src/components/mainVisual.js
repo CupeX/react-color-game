@@ -3,23 +3,29 @@ import ButtonComponent from './ButtonComponent';
 import ColorBoxes from './ColorBoxes';
 import hexGenerator from './HexGenerator';
 import hexToRgb from './HexToRgb';
+import {
+  Button,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Input,
+} from 'reactstrap';
 
 const MainVisual = () => {
   const [boxesNumber, setBoxesNumber] = useState(3);
   const [scoreCounter, setScoreCounter] = useState(1);
   const [colors, setColors] = useState([]);
   const [trueColor, setTrueColor] = useState('');
-  const [rgbResult, setRgbResult] = useState([]);
   const [isHex, setIsHex] = useState(true);
-  const [isGenerated, setIsGenerated] = useState(false);
   const [score, setScore] = useState(0);
   const [reducedBoxesList, setReducedBoxesList] = useState([]);
+  const [lvlButton, setLvlButton] = useState([1, 2, 3, 4, 5]);
+  const [customLvl, setCustomLvl] = useState('');
 
   useEffect(() => {
     getNewColors();
     setScore(+window.localStorage.getItem('score'));
-    setRgbResult(hexToRgb(trueColor, isGenerated));
-  }, []);
+  }, [boxesNumber]);
 
   const getNewColors = () => {
     const newColors = Array.from(Array(boxesNumber).keys()).map(() =>
@@ -30,19 +36,14 @@ const MainVisual = () => {
     setTrueColor(randomer);
     setColors(newColors);
     setReducedBoxesList(newColors);
-    setIsGenerated(true);
   };
 
   const lvlHandler = prop => {
     setBoxesNumber(prop);
-    setRgbResult([]);
-    setIsGenerated(false);
   };
 
   const resetHandler = () => {
     getNewColors();
-    setRgbResult([]);
-    setIsGenerated(false);
   };
 
   const checkColorHandler = x => {
@@ -75,11 +76,26 @@ const MainVisual = () => {
     window.localStorage.setItem('score', score);
   };
 
+  const customLvlHandler = e => {
+    setCustomLvl(e.target.value);
+  };
+
+  const formSubmissionHandler = e => {
+    e.preventDefault();
+    lvlHandler(+customLvl);
+    getNewColors();
+    setCustomLvl('');
+  };
+
   return (
     <div className="container d-flex flex-column mt-5 col-xl-4 col-lg-6">
       <div className="border-bottom border-dark mb-3">
         <h3>Guess the color?</h3>
-        {isHex ? <h3>hex: {trueColor}</h3> : <h3>rgb: {rgbResult}</h3>}
+        {isHex ? (
+          <h3>hex: {trueColor}</h3>
+        ) : (
+          <h3>rgb: {hexToRgb(trueColor)}</h3>
+        )}
         <ButtonComponent
           onClick={() => colorToggler()}
           color="primary"
@@ -89,20 +105,36 @@ const MainVisual = () => {
         </ButtonComponent>
       </div>
 
-      <div className="d-flex justify-content-between border-bottom border-dark pb-3">
-        <ButtonComponent onClick={() => lvlHandler(3)} color="success">
-          lvl 1
-        </ButtonComponent>
-        <ButtonComponent onClick={() => lvlHandler(6)} color="success">
-          lvl 2
-        </ButtonComponent>
-        <ButtonComponent onClick={() => lvlHandler(9)} color="success">
-          lvl 3
-        </ButtonComponent>
+      <div className="border-bottom border-dark pb-3">
+        <div className="d-flex justify-content-between mb-3">
+          {lvlButton.map(x => (
+            <Button onClick={() => lvlHandler(x * 3)} color="success">
+              {' '}
+              lvl {x}
+            </Button>
+          ))}
 
-        <ButtonComponent onClick={() => resetHandler()} color="danger">
-          RESET LVL
-        </ButtonComponent>
+          <ButtonComponent onClick={() => resetHandler()} color="danger">
+            RESET LVL
+          </ButtonComponent>
+        </div>
+
+        <form onSubmit={formSubmissionHandler}>
+          <InputGroup className="py-1">
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>add custom number of boxes?</InputGroupText>
+            </InputGroupAddon>
+            <Input
+              type="number"
+              name="lvls"
+              value={customLvl}
+              onChange={customLvlHandler}
+            />
+            <Button type="submit" color="success">
+              add
+            </Button>
+          </InputGroup>
+        </form>
       </div>
       <ColorBoxes
         onCheckColor={checkColorHandler}

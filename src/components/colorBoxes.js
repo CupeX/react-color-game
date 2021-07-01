@@ -4,7 +4,6 @@ import ButtonComponent from './ButtonComponent';
 const ColorBoxes = props => {
   return (
     <div>
-      <h2>empty</h2>
       <div className="d-flex justify-content-between my-3">
         <h2>score: {props.score}</h2>
         <ButtonComponent onClick={props.onSaveScore} color="success">
