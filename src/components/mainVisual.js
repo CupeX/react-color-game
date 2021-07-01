@@ -1,43 +1,39 @@
 import { useState, useEffect } from 'react';
 import ButtonComponent from './ButtonComponent';
 import ColorBoxes from './colorBoxes';
-
-const hexGen = length => {
-  var result = '#';
-  var characters = 'abcdef0123456789';
-  var charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
+import hexGenerator from './HexGenerator';
+import hexToRgb from './HexToRgb';
 
 const MainVisual = () => {
-  const [counter, setCounter] = useState(3);
+  const [boxesNumber, setBoxesNumber] = useState(3);
+  const [scoreCounter, setScoreCounter] = useState(1);
   const [colors, setColors] = useState([]);
   const [trueColor, setTrueColor] = useState('');
   const [rgbResult, setRgbResult] = useState([]);
   const [isHex, setIsHex] = useState(true);
   const [isGenerated, setIsGenerated] = useState(false);
+  const [score, setScore] = useState(0);
+  const [reducedBoxesList, setReducedBoxesList] = useState([]);
 
   useEffect(() => {
     getNewColors();
-    if (isGenerated) {
-      hexToRgb();
-    }
-  }, [counter, isGenerated]);
+    setRgbResult(hexToRgb(trueColor, isGenerated));
+  }, [boxesNumber, isGenerated]);
 
   const getNewColors = () => {
-    const newColors = Array.from(Array(counter).keys()).map(() => hexGen(6));
+    const newColors = Array.from(Array(boxesNumber).keys()).map(() =>
+      hexGenerator(6)
+    );
 
     const randomer = newColors[Math.floor(Math.random() * newColors.length)];
     setTrueColor(randomer);
     setColors(newColors);
+    setReducedBoxesList(newColors);
     setIsGenerated(true);
   };
 
   const lvlHandler = prop => {
-    setCounter(prop);
+    setBoxesNumber(prop);
     setRgbResult([]);
     setIsGenerated(false);
   };
@@ -48,38 +44,38 @@ const MainVisual = () => {
     setIsGenerated(false);
   };
 
-  const hexToRgb = () => {
-    const hexBase = [
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-      'f',
-    ];
-    const cutter = trueColor.substring(1).match(/.{1,2}/g);
+  const colorToggler = () => {
+    setIsHex(!isHex);
+  };
 
-    for (let i = 0; i < cutter.length; i++) {
-      const value1 = hexBase.indexOf(cutter[i][0]) * 16;
-      const value2 = hexBase.indexOf(cutter[i][1]);
-      const result = value1 + value2 + ', ';
-
-      setRgbResult(currentResult => [...currentResult, result]);
+  const checkColorHandler = x => {
+    if (x === trueColor) {
+      alert(
+        `Good job! You get it after ${scoreCounter} attempts, and recive ${
+          boxesNumber - scoreCounter + 1
+        } points!`
+      );
+      setScoreCounter(1);
+      setScore(score + boxesNumber - scoreCounter + 1);
+      resetHandler();
+    } else {
+      const updatedList = reducedBoxesList.filter(item => x !== item);
+      setReducedBoxesList(updatedList);
+      setScoreCounter(scoreCounter + 1);
     }
   };
 
-  const colorToggler = () => {
-    setIsHex(!isHex);
+  useEffect(() => {
+    setScore(+window.localStorage.getItem('score'));
+  }, []);
+
+  const resetScore = () => {
+    setScore(0);
+    window.localStorage.removeItem('score');
+  };
+
+  const saveScore = () => {
+    window.localStorage.setItem('score', score);
   };
 
   return (
@@ -112,10 +108,12 @@ const MainVisual = () => {
         </ButtonComponent>
       </div>
       <ColorBoxes
-        resetLvl={() => resetHandler()}
-        boxes={counter}
-        background={colors}
+        onCheckColor={checkColorHandler}
+        onResetScore={() => resetScore()}
+        onSaveScore={() => saveScore()}
+        background={reducedBoxesList}
         trueColor={trueColor}
+        score={score}
       />
     </div>
   );
