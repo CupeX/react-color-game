@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/react-color-game/static/css/main.8bcbd900.chunk.css",
-    "main.js": "/react-color-game/static/js/main.849d447c.chunk.js",
-    "main.js.map": "/react-color-game/static/js/main.849d447c.chunk.js.map",
-    "runtime-main.js": "/react-color-game/static/js/runtime-main.7684447b.js",
-    "runtime-main.js.map": "/react-color-game/static/js/runtime-main.7684447b.js.map",
+    "main.js": "/react-color-game/static/js/main.1aa7ef9f.chunk.js",
+    "main.js.map": "/react-color-game/static/js/main.1aa7ef9f.chunk.js.map",
+    "runtime-main.js": "/react-color-game/static/js/runtime-main.0a40911d.js",
+    "runtime-main.js.map": "/react-color-game/static/js/runtime-main.0a40911d.js.map",
     "static/css/2.d45d6843.chunk.css": "/react-color-game/static/css/2.d45d6843.chunk.css",
-    "static/js/2.fd343ee3.chunk.js": "/react-color-game/static/js/2.fd343ee3.chunk.js",
-    "static/js/2.fd343ee3.chunk.js.map": "/react-color-game/static/js/2.fd343ee3.chunk.js.map",
-    "static/js/3.6a9c6978.chunk.js": "/react-color-game/static/js/3.6a9c6978.chunk.js",
-    "static/js/3.6a9c6978.chunk.js.map": "/react-color-game/static/js/3.6a9c6978.chunk.js.map",
+    "static/js/2.9cab5bfc.chunk.js": "/react-color-game/static/js/2.9cab5bfc.chunk.js",
+    "static/js/2.9cab5bfc.chunk.js.map": "/react-color-game/static/js/2.9cab5bfc.chunk.js.map",
+    "static/js/3.4ca781c8.chunk.js": "/react-color-game/static/js/3.4ca781c8.chunk.js",
+    "static/js/3.4ca781c8.chunk.js.map": "/react-color-game/static/js/3.4ca781c8.chunk.js.map",
     "index.html": "/react-color-game/index.html",
     "static/css/2.d45d6843.chunk.css.map": "/react-color-game/static/css/2.d45d6843.chunk.css.map",
     "static/css/main.8bcbd900.chunk.css.map": "/react-color-game/static/css/main.8bcbd900.chunk.css.map",
-    "static/js/2.fd343ee3.chunk.js.LICENSE.txt": "/react-color-game/static/js/2.fd343ee3.chunk.js.LICENSE.txt"
+    "static/js/2.9cab5bfc.chunk.js.LICENSE.txt": "/react-color-game/static/js/2.9cab5bfc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.7684447b.js",
+    "static/js/runtime-main.0a40911d.js",
     "static/css/2.d45d6843.chunk.css",
-    "static/js/2.fd343ee3.chunk.js",
+    "static/js/2.9cab5bfc.chunk.js",
     "static/css/main.8bcbd900.chunk.css",
-    "static/js/main.849d447c.chunk.js"
+    "static/js/main.1aa7ef9f.chunk.js"
   ]
 }
