@@ -20,7 +20,9 @@ const MainVisual = () => {
   const [score, setScore] = useState(0);
   const [reducedBoxesList, setReducedBoxesList] = useState([]);
   const [lvlButton, setLvlButton] = useState([1, 2, 3, 4, 5]);
-  const [customLvl, setCustomLvl] = useState('');
+  const [customLvlName, setCustomLvlName] = useState('');
+  const [customLvlBoxes, setCustomLvlBoxes] = useState('');
+  const [customLvl, setCustomLvl] = useState([]);
 
   useEffect(() => {
     getNewColors();
@@ -77,14 +79,29 @@ const MainVisual = () => {
   };
 
   const customLvlHandler = e => {
-    setCustomLvl(e.target.value);
+    setCustomLvlBoxes(e.target.value);
+  };
+
+  const customLvlNameHandler = e => {
+    setCustomLvlName(e.target.value);
   };
 
   const formSubmissionHandler = e => {
     e.preventDefault();
-    lvlHandler(+customLvl);
-    getNewColors();
-    setCustomLvl('');
+    // lvlHandler(+customLvl);
+    // getNewColors();
+    setCustomLvlBoxes('');
+    setCustomLvlName('');
+    const addLvl = {
+      lvlName: customLvlName,
+      lvlNumBoxes: +customLvlBoxes,
+    };
+
+    setCustomLvl(prevState => [addLvl, ...prevState]);
+  };
+
+  const deleteCustomLvlsHandler = () => {
+    setCustomLvl([]);
   };
 
   return (
@@ -105,11 +122,10 @@ const MainVisual = () => {
         </ButtonComponent>
       </div>
 
-      <div className="border-bottom border-dark pb-3">
-        <div className="d-flex justify-content-between mb-3">
+      <div className="border-bottom border-dark">
+        <div className="d-flex justify-content-between mb-3 border-bottom border-dark pb-3">
           {lvlButton.map(x => (
             <Button onClick={() => lvlHandler(x * 3)} color="success">
-              {' '}
               lvl {x}
             </Button>
           ))}
@@ -119,21 +135,52 @@ const MainVisual = () => {
           </ButtonComponent>
         </div>
 
+        <div>
+          <h5>Custom levels:</h5>
+          {customLvl.map(x => (
+            <Button
+              onClick={() => lvlHandler(x.lvlNumBoxes)}
+              color="success"
+              className="m-2"
+            >
+              {x.lvlName}
+            </Button>
+          ))}
+        </div>
+
         <form onSubmit={formSubmissionHandler}>
           <InputGroup className="py-1">
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>add custom number of boxes?</InputGroupText>
+            <InputGroupAddon addonType="prepend" className="w-50">
+              <InputGroupText>add custom lvl name:</InputGroupText>
+            </InputGroupAddon>
+            <Input
+              type="text"
+              name="lvl name"
+              value={customLvlName}
+              onChange={customLvlNameHandler}
+            />
+            <InputGroupAddon addonType="prepend" className="w-50">
+              <InputGroupText>add number of boxes:</InputGroupText>
             </InputGroupAddon>
             <Input
               type="number"
               name="lvls"
-              value={customLvl}
+              value={customLvlBoxes}
               onChange={customLvlHandler}
             />
-            <Button type="submit" color="success">
-              add
-            </Button>
           </InputGroup>
+
+          <Button type="submit" color="success" className="m-2">
+            add custom lvl
+          </Button>
+          <Button
+            onClick={() => deleteCustomLvlsHandler()}
+            type="btn"
+            color="danger"
+            className="m-2"
+          >
+            delete custom levels
+          </Button>
         </form>
       </div>
       <ColorBoxes
