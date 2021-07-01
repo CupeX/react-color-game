@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ButtonComponent from './ButtonComponent';
-import ColorBoxes from './colorBoxes';
+import ColorBoxes from './ColorBoxes';
 import hexGenerator from './HexGenerator';
 import hexToRgb from './HexToRgb';
 
@@ -17,8 +17,9 @@ const MainVisual = () => {
 
   useEffect(() => {
     getNewColors();
+    setScore(+window.localStorage.getItem('score'));
     setRgbResult(hexToRgb(trueColor, isGenerated));
-  }, [boxesNumber, isGenerated]);
+  }, []);
 
   const getNewColors = () => {
     const newColors = Array.from(Array(boxesNumber).keys()).map(() =>
@@ -44,10 +45,6 @@ const MainVisual = () => {
     setIsGenerated(false);
   };
 
-  const colorToggler = () => {
-    setIsHex(!isHex);
-  };
-
   const checkColorHandler = x => {
     if (x === trueColor) {
       alert(
@@ -65,9 +62,9 @@ const MainVisual = () => {
     }
   };
 
-  useEffect(() => {
-    setScore(+window.localStorage.getItem('score'));
-  }, []);
+  const colorToggler = () => {
+    setIsHex(!isHex);
+  };
 
   const resetScore = () => {
     setScore(0);

@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid';
-// import { useEffect, useState } from 'react';
 import ButtonComponent from './ButtonComponent';
 
 const ColorBoxes = props => {
