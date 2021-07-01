@@ -2,7 +2,11 @@ import { Button } from 'reactstrap';
 
 const ButtonComponent = props => {
   return (
-    <Button color={props.color} onClick={() => props.onClick()}>
+    <Button
+      color={props.color}
+      onClick={() => props.onClick()}
+      className={props.className}
+    >
       {props.children}
     </Button>
   );
