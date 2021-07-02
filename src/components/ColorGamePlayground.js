@@ -1,18 +1,16 @@
 import { nanoid } from 'nanoid';
 
-const ColorBoxes = props => {
-  console.log(props.boxes);
-
+const ColorGamePlayground = props => {
   const customWidth = () => {
-    if (props.boxes < 19) {
-      return 'col-6';
-    } else if (props.boxes >= 19 && props.boxes < 31) {
-      return 'col-8';
-    } else if (props.boxes >= 31 && props.boxes < 37) {
-      return 'col-10';
-    } else {
-      return 'col-12';
-    }
+    // if (props.boxes < 19) {
+    //   return 'col-6';
+    // } else if (props.boxes >= 19 && props.boxes < 31) {
+    //   return 'col-8';
+    // } else if (props.boxes >= 31 && props.boxes < 37) {
+    //   return 'col-10';
+    // } else {
+    //   return 'col-12';
+    // }
   };
 
   return (
@@ -34,4 +32,4 @@ const ColorBoxes = props => {
   );
 };
 
-export default ColorBoxes;
+export default ColorGamePlayground;
