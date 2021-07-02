@@ -23,6 +23,7 @@ const MainVisual = () => {
   const [customLvlName, setCustomLvlName] = useState('');
   const [customLvlBoxes, setCustomLvlBoxes] = useState('');
   const [customLvl, setCustomLvl] = useState([]);
+  const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
     getNewColors();
@@ -90,6 +91,9 @@ const MainVisual = () => {
     e.preventDefault();
     // lvlHandler(+customLvl);
     // getNewColors();
+    // if (customLvlName === '' && customLvlBoxes === '') {
+    //   alert('Please, fill all fields!');
+    // } else {
     setCustomLvlBoxes('');
     setCustomLvlName('');
     const addLvl = {
@@ -98,6 +102,7 @@ const MainVisual = () => {
     };
 
     setCustomLvl(prevState => [addLvl, ...prevState]);
+    // }
   };
 
   const deleteCustomLvlsHandler = () => {
@@ -105,74 +110,91 @@ const MainVisual = () => {
   };
 
   return (
-    <div className="container d-flex flex-column mt-5 col-xl-4 col-lg-6">
-      <div className="border-bottom border-dark mb-3">
-        <h3>Guess the color?</h3>
-        {isHex ? (
-          <h3>hex: {trueColor}</h3>
-        ) : (
-          <h3>rgb: {hexToRgb(trueColor)}</h3>
-        )}
-        <ButtonComponent
-          onClick={() => colorToggler()}
-          color="primary"
-          className="my-3"
-        >
-          {isHex ? 'convert to RGB' : 'convert to HEX'}
-        </ButtonComponent>
-      </div>
-
-      <div className="border-bottom border-dark">
-        <div className="d-flex justify-content-between mb-3 border-bottom border-dark pb-3">
-          {lvlButton.map(x => (
-            <Button onClick={() => lvlHandler(x * 3)} color="success">
-              lvl {x}
-            </Button>
-          ))}
-
-          <ButtonComponent onClick={() => resetHandler()} color="danger">
-            RESET LVL
+    <div className="d-flex container flex-row">
+      <div className="col-4 vh-100">
+        <div className="d-flex justify-content-between border-bottom border-dark my-3 pb-3">
+          <h2>score: {score}</h2>
+          <ButtonComponent onClick={saveScore} color="success">
+            save score
+          </ButtonComponent>
+          <ButtonComponent onClick={resetScore} color="danger">
+            reset score
+          </ButtonComponent>
+        </div>
+        <div className="border-bottom border-dark">
+          <h3>Guess the color?</h3>
+          {isHex ? (
+            <h3>hex: {trueColor}</h3>
+          ) : (
+            <h3>rgb: {hexToRgb(trueColor)}</h3>
+          )}
+          <ButtonComponent
+            onClick={() => colorToggler()}
+            color="primary"
+            className="my-3"
+          >
+            {isHex ? 'convert to RGB' : 'convert to HEX'}
           </ButtonComponent>
         </div>
 
-        <div>
-          <h5>Custom levels:</h5>
-          {customLvl.map(x => (
-            <Button
-              onClick={() => lvlHandler(x.lvlNumBoxes)}
-              color="success"
-              className="m-2"
-            >
-              {x.lvlName}
+        <div className="border-bottom border-dark my-3">
+          <div className="d-flex justify-content-between border-bottom border-dark pb-3">
+            {lvlButton.map(x => (
+              <Button
+                onClick={() => lvlHandler(x * 3)}
+                color="success"
+                className="mx-1"
+              >
+                lvl {x}
+              </Button>
+            ))}
+
+            <ButtonComponent onClick={() => resetHandler()} color="danger">
+              RESET LVL
+            </ButtonComponent>
+          </div>
+
+          <div className="overflow-auto my-3" style={{ maxHeight: '20vh' }}>
+            <h5>Custom levels:</h5>
+            {customLvl.map(x => (
+              <Button
+                onClick={() => lvlHandler(x.lvlNumBoxes)}
+                color="success"
+                className="m-2"
+              >
+                {x.lvlName}
+              </Button>
+            ))}
+          </div>
+
+          <form onSubmit={formSubmissionHandler}>
+            <InputGroup className="my-2">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>add custom lvl name:</InputGroupText>
+              </InputGroupAddon>
+              <Input
+                type="text"
+                name="lvl name"
+                value={customLvlName}
+                onChange={customLvlNameHandler}
+              />
+            </InputGroup>
+            <InputGroup className="my-2">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>add number of boxes:</InputGroupText>
+              </InputGroupAddon>
+              <Input
+                type="number"
+                name="lvls"
+                value={customLvlBoxes}
+                onChange={customLvlHandler}
+              />
+            </InputGroup>
+
+            <Button type="submit" color="success" className="m-2">
+              add custom lvl
             </Button>
-          ))}
-        </div>
-
-        <form onSubmit={formSubmissionHandler}>
-          <InputGroup className="py-1">
-            <InputGroupAddon addonType="prepend" className="w-50">
-              <InputGroupText>add custom lvl name:</InputGroupText>
-            </InputGroupAddon>
-            <Input
-              type="text"
-              name="lvl name"
-              value={customLvlName}
-              onChange={customLvlNameHandler}
-            />
-            <InputGroupAddon addonType="prepend" className="w-50">
-              <InputGroupText>add number of boxes:</InputGroupText>
-            </InputGroupAddon>
-            <Input
-              type="number"
-              name="lvls"
-              value={customLvlBoxes}
-              onChange={customLvlHandler}
-            />
-          </InputGroup>
-
-          <Button type="submit" color="success" className="m-2">
-            add custom lvl
-          </Button>
+          </form>
           <Button
             onClick={() => deleteCustomLvlsHandler()}
             type="btn"
@@ -181,7 +203,7 @@ const MainVisual = () => {
           >
             delete custom levels
           </Button>
-        </form>
+        </div>
       </div>
       <ColorBoxes
         onCheckColor={checkColorHandler}
