@@ -212,6 +212,7 @@ const MainVisual = () => {
         background={reducedBoxesList}
         trueColor={trueColor}
         score={score}
+        boxes={boxesNumber}
       />
     </div>
   );
