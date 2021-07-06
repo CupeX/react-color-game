@@ -1,5 +1,4 @@
 const hexToRgb = x => {
-  console.log('x=', x)
   const cutter = x.substring(1).match(/.{1,2}/g)
   const newArray = []
 

@@ -18,8 +18,6 @@ const AppContainer = () => {
   const [customLvl, setCustomLvl] = useState([])
   const [allGenerated, setAllGenerated] = useState(false)
 
-  console.log(allGenerated)
-
   const getNewColors = () => {
     const newColors = Array.from(Array(boxesNumber).keys()).map(() =>
       hexGenerator(6)
@@ -97,11 +95,18 @@ const AppContainer = () => {
 
       setCustomLvl(prevState => [addLvl, ...prevState])
     }
-    console.log(customLvlName, customLvlBoxes)
   }
 
   const deleteCustomLvlsHandler = () => {
     setCustomLvl([])
+  }
+
+  const hintHandler = () => {
+    const halfLength = Math.floor(colors.length / 2)
+    const withoutTrueColor = colors.filter(x => x !== trueColor)
+    const halfSize = withoutTrueColor.splice(0, halfLength).concat(trueColor)
+    setReducedBoxesList(halfSize)
+    setBoxesNumber(halfSize.length)
   }
 
   return (
@@ -111,6 +116,7 @@ const AppContainer = () => {
       ) : (
         <div className='d-flex container'>
           <ColorGameControls
+            onHint={() => hintHandler()}
             onSaveScore={() => saveScore()}
             onResetScore={() => resetScore()}
             onResetHandler={() => resetHandler()}
