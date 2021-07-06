@@ -1,5 +1,7 @@
 const hexToRgb = x => {
-  const newArray = [];
+  console.log('x=', x)
+  const cutter = x.substring(1).match(/.{1,2}/g)
+  const newArray = []
 
   const hexBase = [
     '0',
@@ -18,16 +20,16 @@ const hexToRgb = x => {
     'd',
     'e',
     'f',
-  ];
-  const cutter = x.substring(1).match(/.{1,2}/g);
+  ]
+
   for (let i = 0; i < cutter.length; i++) {
-    const value1 = hexBase.indexOf(cutter[i][0]) * 16;
-    const value2 = hexBase.indexOf(cutter[i][1]);
-    const result = value1 + value2 + ', ';
-    newArray.push(result);
+    const value1 = hexBase.indexOf(cutter[i][0]) * 16
+    const value2 = hexBase.indexOf(cutter[i][1])
+    const result = value1 + value2
+    newArray.push(result)
   }
 
-  return newArray;
-};
+  return newArray
+}
 
-export default hexToRgb;
+export default hexToRgb
