@@ -9,7 +9,7 @@ import {
 } from 'reactstrap'
 import ButtonComponent from './ButtonComponent'
 import hexToRgb from './HexToRgb'
-import rgbToHsl from './rgbToHsl'
+import rgbToHsl from './RgbToHsl'
 
 const ColorGameControls = props => {
   const [colorOption, setColorOption] = useState('hex')
@@ -126,6 +126,7 @@ const ColorGameControls = props => {
           <h5>Custom levels:</h5>
           {customLvl.map(x => (
             <Button
+              id={nanoid()}
               onClick={() => props.onLvlHandler(x.lvlNumBoxes)}
               color='success'
               className='m-2'

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
 import hexGenerator from './HexGenerator'
-import rgbToHsl from './rgbToHsl'
+import rgbToHsl from './RgbToHsl'
 
 const AppContainer = () => {
   const [boxesNumber, setBoxesNumber] = useState(3)
@@ -102,8 +102,9 @@ const AppContainer = () => {
   }
 
   const hintHandler = () => {
-    const halfLength = Math.floor(colors.length / 2)
     const withoutTrueColor = colors.filter(x => x !== trueColor)
+    const halfLength = Math.floor(withoutTrueColor.length / 2)
+
     const halfSize = withoutTrueColor.splice(0, halfLength).concat(trueColor)
     setReducedBoxesList(halfSize)
     setBoxesNumber(halfSize.length)
