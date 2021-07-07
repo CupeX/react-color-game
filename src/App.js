@@ -1,12 +1,12 @@
-import './App.css';
-import MainVisual from './components/MainVisual';
+import './App.css'
+import AppContainer from './components/AppContainer'
 
 function App() {
-  return (
-    <div className="App">
-      <MainVisual />
-    </div>
-  );
+	return (
+		<div className='App'>
+			<AppContainer />
+		</div>
+	)
 }
 
-export default App;
+export default App
