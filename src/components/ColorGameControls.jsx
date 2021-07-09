@@ -14,11 +14,7 @@ import rgbToHsl from './RgbToHsl'
 const ColorGameControls = props => {
   const [colorOption, setColorOption] = useState('hex')
 
-  const { score } = props
-  const { trueColor } = props
-  const { customLvl } = props
-  const { customLvlName } = props
-  const { customLvlBoxes } = props
+  const { score, trueColor, customLvl, customLvlName, customLvlBoxes } = props
 
   const radioBtnHandler = e => {
     setColorOption(e.target.value)
