@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react'
 import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
 import hexGenerator from './HexGenerator'
-import rgbToHsl from './RgbToHsl'
+import { increment } from '../store/boxesNumber'
+import { useSelector, useDispatch } from 'react-redux'
 
 const AppContainer = () => {
-  const [boxesNumber, setBoxesNumber] = useState(3)
+  const boxesTest = useSelector(state => state.boxesNumber.value)
+  const dispatch = useDispatch()
+
   const [scoreCounter, setScoreCounter] = useState(1)
   const [colors, setColors] = useState([])
   const [trueColor, setTrueColor] = useState('')
@@ -19,7 +22,7 @@ const AppContainer = () => {
   const [allGenerated, setAllGenerated] = useState(false)
 
   const getNewColors = () => {
-    const newColors = Array.from(Array(boxesNumber).keys()).map(() =>
+    const newColors = Array.from(Array(boxesTest).keys()).map(() =>
       hexGenerator(6)
     )
 
@@ -33,10 +36,10 @@ const AppContainer = () => {
   useEffect(() => {
     getNewColors()
     setScore(+window.localStorage.getItem('score'))
-  }, [boxesNumber])
+  }, [boxesTest])
 
   const lvlHandler = prop => {
-    setBoxesNumber(prop)
+    dispatch(increment(prop))
   }
 
   const resetHandler = () => {
@@ -47,11 +50,11 @@ const AppContainer = () => {
     if (x === trueColor) {
       alert(
         `Good job! You get it after ${scoreCounter} attempts, and recive ${
-          boxesNumber - scoreCounter + 1
+          boxesTest - scoreCounter + 1
         } points!`
       )
       setScoreCounter(1)
-      setScore(score + boxesNumber - scoreCounter + 1)
+      setScore(score + boxesTest - scoreCounter + 1)
       resetHandler()
     } else {
       const updatedList = reducedBoxesList.filter(item => x !== item)
@@ -107,7 +110,7 @@ const AppContainer = () => {
 
     const halfSize = withoutTrueColor.splice(0, halfLength).concat(trueColor)
     setReducedBoxesList(halfSize)
-    setBoxesNumber(halfSize.length)
+    dispatch(increment(halfSize.length))
   }
 
   return (
@@ -139,7 +142,7 @@ const AppContainer = () => {
             background={reducedBoxesList}
             trueColor={trueColor}
             score={score}
-            boxes={boxesNumber}
+            boxes={boxesTest}
           />
         </div>
       )}
