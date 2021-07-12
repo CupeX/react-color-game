@@ -3,40 +3,44 @@ import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
 import hexGenerator from './HexGenerator'
 import { increment } from '../store/boxesNumber'
+import { incrementReducedBoxes } from '../store/reducedBoxesList'
 import { useSelector, useDispatch } from 'react-redux'
 
 const AppContainer = () => {
-  const boxesTest = useSelector(state => state.boxesNumber.value)
   const dispatch = useDispatch()
+  const boxesNumber = useSelector(state => state.boxesNumber.value)
 
-  const [scoreCounter, setScoreCounter] = useState(1)
-  const [colors, setColors] = useState([])
-  const [trueColor, setTrueColor] = useState('')
-  const [isHex, setIsHex] = useState(true)
-  const [score, setScore] = useState(0)
-  const [reducedBoxesList, setReducedBoxesList] = useState([])
+  const reducedBoxesList = useSelector(state => state.reducedBoxesList.value)
+
+  // const [reducedBoxesList, setReducedBoxesList] = useState([])
   const [lvlButton, setLvlButton] = useState([1, 2, 3, 4, 5])
   const [customLvlName, setCustomLvlName] = useState('')
   const [customLvlBoxes, setCustomLvlBoxes] = useState('')
   const [customLvl, setCustomLvl] = useState([])
   const [allGenerated, setAllGenerated] = useState(false)
 
+  const [trueColor, setTrueColor] = useState('')
+  const [colors, setColors] = useState([])
+  const [score, setScore] = useState(0)
+  const [scoreCounter, setScoreCounter] = useState(1)
+
   const getNewColors = () => {
-    const newColors = Array.from(Array(boxesTest).keys()).map(() =>
+    const newColors = Array.from(Array(boxesNumber).keys()).map(() =>
       hexGenerator(6)
     )
 
     const randomer = newColors[Math.floor(Math.random() * newColors.length)]
     setTrueColor(randomer)
     setColors(newColors)
-    setReducedBoxesList(newColors)
+    dispatch(incrementReducedBoxes(newColors))
+    // setReducedBoxesList(newColors)
     setAllGenerated(true)
   }
 
   useEffect(() => {
     getNewColors()
     setScore(+window.localStorage.getItem('score'))
-  }, [boxesTest])
+  }, [boxesNumber])
 
   const lvlHandler = prop => {
     dispatch(increment(prop))
@@ -50,21 +54,18 @@ const AppContainer = () => {
     if (x === trueColor) {
       alert(
         `Good job! You get it after ${scoreCounter} attempts, and recive ${
-          boxesTest - scoreCounter + 1
+          boxesNumber - scoreCounter + 1
         } points!`
       )
       setScoreCounter(1)
-      setScore(score + boxesTest - scoreCounter + 1)
+      setScore(score + boxesNumber - scoreCounter + 1)
       resetHandler()
     } else {
       const updatedList = reducedBoxesList.filter(item => x !== item)
-      setReducedBoxesList(updatedList)
+      dispatch(incrementReducedBoxes(updatedList))
+      // setReducedBoxesList(updatedList)
       setScoreCounter(scoreCounter + 1)
     }
-  }
-
-  const colorToggler = () => {
-    setIsHex(!isHex)
   }
 
   const resetScore = () => {
@@ -109,8 +110,10 @@ const AppContainer = () => {
     const halfLength = Math.floor(withoutTrueColor.length / 2)
 
     const halfSize = withoutTrueColor.splice(0, halfLength).concat(trueColor)
-    setReducedBoxesList(halfSize)
-    dispatch(increment(halfSize.length))
+    dispatch(incrementReducedBoxes(halfSize))
+
+    // setReducedBoxesList(halfSize)
+    // dispatch(increment(halfSize.length))
   }
 
   return (
@@ -140,9 +143,9 @@ const AppContainer = () => {
           <ColorGamePlayground
             onCheckColor={checkColorHandler}
             background={reducedBoxesList}
-            trueColor={trueColor}
+            // trueColor={trueColor}
             score={score}
-            boxes={boxesTest}
+            boxes={boxesNumber}
           />
         </div>
       )}

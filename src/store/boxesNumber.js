@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-export const boxesTest = createSlice({
-  name: 'boxesTest',
+export const boxesNumber = createSlice({
+  name: 'boxesNumber',
   initialState: {
     value: 3,
   },
@@ -14,6 +14,6 @@ export const boxesTest = createSlice({
   },
 })
 
-export const { increment } = boxesTest.actions
+export const { increment } = boxesNumber.actions
 
-export default boxesTest.reducer
+export default boxesNumber.reducer
