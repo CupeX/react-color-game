@@ -14,14 +14,8 @@ import { setActiveColorDisplayFormat } from '../store/gameSettings'
 
 const ColorGameControls = props => {
   const dispatch = useDispatch()
-  const {
-    score,
-    trueColor,
-    availableLevels,
-    customLvlName,
-    customLvlBoxes,
-    onLvlHandler,
-  } = props
+  const { score, trueColor, customLvlName, customLvlBoxes, onLvlHandler } =
+    props
   const activeColorDisplayFormat = useSelector(
     state => state.gameSettings.activeColorDisplayFormat
   )

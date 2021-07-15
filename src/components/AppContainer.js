@@ -15,6 +15,8 @@ import {
   setBoxesNumber,
   setCustomLevels,
   deleteCustomLevels,
+  setHintActive,
+  setInitialBoxNumber,
 } from '../store/gameSettings'
 
 const AppContainer = () => {
@@ -30,11 +32,21 @@ const AppContainer = () => {
     state => state.gameSettings.availableLevels
   )
   const curBoxNumber = useSelector(state => state.gameSettings.curBoxNumber)
-  const customLevels = useSelector(state => state.gameSettings.customLevels)
+  const hintActive = useSelector(state => state.gameSettings.hintActive)
+
+  const initialBoxNumber = useSelector(
+    state => state.gameSettings.initialBoxNumber
+  )
 
   useEffect(() => {
-    getNewColors()
     dispatch(setScore(+window.localStorage.getItem('score')))
+  }, [])
+
+  useEffect(() => {
+    if (!hintActive) {
+      getNewColors()
+    } else {
+    }
   }, [curBoxNumber, allGenerated])
 
   const saveScore = () => {
@@ -74,11 +86,15 @@ const AppContainer = () => {
   }
 
   const resetHandler = () => {
+    dispatch(setHintActive(false))
+    dispatch(setBoxesNumber(initialBoxNumber))
     getNewColors()
   }
 
-  const lvlHandler = prop => {
-    dispatch(setBoxesNumber(prop))
+  const lvlHandler = boxesNumber => {
+    dispatch(setHintActive(false))
+    dispatch(setInitialBoxNumber(boxesNumber))
+    dispatch(setBoxesNumber(boxesNumber))
   }
 
   const customLvlHandler = prop => {
@@ -113,10 +129,12 @@ const AppContainer = () => {
   }
 
   const hintHandler = () => {
+    dispatch(setHintActive(true))
     const withoutTrueColor = colors.filter(x => x !== trueColor)
     const halfLength = Math.floor(withoutTrueColor.length / 2)
     const halfSize = withoutTrueColor.splice(0, halfLength).concat(trueColor)
 
+    dispatch(attemptsReset())
     dispatch(setColors(halfSize))
     dispatch(setBoxesNumber(halfSize.length))
   }
@@ -133,7 +151,7 @@ const AppContainer = () => {
             onResetScore={() => resetScore()}
             onResetHandler={() => resetHandler()}
             onColorToggler={() => colorToggler()}
-            onLvlHandler={prop => lvlHandler(prop)}
+            onLvlHandler={boxesNumber => lvlHandler(boxesNumber)}
             onCustomLvlHandler={prop => customLvlHandler(prop)}
             onCustomLvlNameHandler={prop => customLvlNameHandler(prop)}
             onDeleteCustomLvlsHandler={() => deleteCustomLvlsHandler()}
