@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
-import hexGenerator from './HexGenerator'
+import hexGenerator from '../utils/hexGenerator'
 import { useDispatch } from 'react-redux'
 import ReduxData from './ReduxData'
 

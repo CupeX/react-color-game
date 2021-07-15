@@ -3,34 +3,51 @@ import { nanoid } from 'nanoid'
 import { Button } from 'reactstrap'
 import { useDispatch } from 'react-redux'
 import { setActiveColorDisplayFormat } from '../store/gameSettings'
-import ButtonComponent from './ButtonComponent'
-import RadioBtns from './RadioBtns'
+import ButtonComponent from '../common/ButtonComponent'
+import RadioBtns from '../common/RadioBtns'
 import FormComponent from './FormComponent'
-import DisplayFormat from './DisplayFormat'
+import displayFormat from './displayFormat'
 import ReduxData from './ReduxData'
+import useCreateCustomLvl from '../hooks/createCustomLvl'
 
 const ColorGameControls = props => {
   const dispatch = useDispatch()
-  const [customLvlName, setCustomLvlName] = useState('')
-  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
+
+  // const [customLvlName, setCustomLvlName] = useState('')
+  // const [customLvlBoxes, setCustomLvlBoxes] = useState('')
+
   const { onLvlHandler } = props
+
   const {
     score,
     trueColor,
     customLevels,
-    availableLevels,
-    setCustomLevels,
+    defaultLevels,
+    // setCustomLevels,
     activeColorDisplayFormat,
   } = ReduxData()
 
-  const displayColorFormat = DisplayFormat(trueColor, activeColorDisplayFormat)
+  // test with custom hook
+  let {
+    testLabel,
+    setTestLabel,
+    testBoxesNumber,
+    setTestBoxesNumber,
+    setCustomLevels,
+  } = useCreateCustomLvl()
 
-  const customLvlHandler = prop => {
-    setCustomLvlBoxes(prop)
+  const radioBtnHandler = prop => {
+    dispatch(setActiveColorDisplayFormat(prop))
+  }
+
+  const customLvlBoxesHandler = prop => {
+    setTestBoxesNumber(prop)
+    // setCustomLvlBoxes(prop)
   }
 
   const customLvlNameHandler = prop => {
-    setCustomLvlName(prop)
+    setTestLabel(prop)
+    // setCustomLvlName(prop)
   }
 
   const deleteCustomLvlsHandler = () => {
@@ -39,22 +56,20 @@ const ColorGameControls = props => {
 
   const formSubmissionHandler = e => {
     e.preventDefault()
-    if (customLvlName === '' && customLvlBoxes === '') {
+    if (testLabel === '' && testBoxesNumber === '') {
       alert('Please, fill all fields!')
     } else {
-      setCustomLvlBoxes('')
-      setCustomLvlName('')
+      // setCustomLvlBoxes('')
+      // setCustomLvlName('')
+      setTestBoxesNumber('')
+      setTestLabel('')
       const addLvl = {
-        label: customLvlName,
-        boxesNumber: +customLvlBoxes,
+        label: testLabel,
+        boxesNumber: +testBoxesNumber,
       }
 
       dispatch(setCustomLevels(addLvl))
     }
-  }
-
-  const radioBtnHandler = prop => {
-    dispatch(setActiveColorDisplayFormat(prop))
   }
 
   return (
@@ -71,14 +86,14 @@ const ColorGameControls = props => {
 
       <div className='border-bottom border-dark'>
         <h3>Guess the color?</h3>
-        {displayColorFormat}
+        {displayFormat(trueColor, activeColorDisplayFormat)}
 
         <RadioBtns onChange={prop => radioBtnHandler(prop)} />
       </div>
 
       <div className='border-bottom border-dark my-3'>
         <div className='d-flex justify-content-between border-bottom border-dark pb-3'>
-          {availableLevels.map(x => (
+          {defaultLevels.map(x => (
             <Button
               key={nanoid()}
               onClick={() => onLvlHandler(x.boxesNumber)}
@@ -114,9 +129,9 @@ const ColorGameControls = props => {
         <FormComponent
           onSubmit={prop => formSubmissionHandler(prop)}
           onChangeName={prop => customLvlNameHandler(prop)}
-          onChangeLvl={prop => customLvlHandler(prop)}
-          customLvlName={customLvlName}
-          customLvlBoxes={customLvlBoxes}
+          onChangeBoxes={prop => customLvlBoxesHandler(prop)}
+          customLvlName={testLabel}
+          customLvlBoxes={testBoxesNumber}
         />
 
         <Button

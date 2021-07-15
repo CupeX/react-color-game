@@ -7,8 +7,13 @@ import {
 } from 'reactstrap'
 
 const FormComponent = prop => {
-  const { customLvlBoxes, customLvlName, onChangeName, onChangeLvl, onSubmit } =
-    prop
+  const {
+    customLvlBoxes,
+    customLvlName,
+    onChangeName,
+    onChangeBoxes,
+    onSubmit,
+  } = prop
 
   return (
     <div>
@@ -32,7 +37,7 @@ const FormComponent = prop => {
             type='number'
             name='lvls'
             value={customLvlBoxes}
-            onChange={e => onChangeLvl(e.target.value)}
+            onChange={e => onChangeBoxes(e.target.value)}
           />
         </InputGroup>
 
