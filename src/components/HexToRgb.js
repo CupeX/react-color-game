@@ -1,3 +1,5 @@
+import { nanoid } from '@reduxjs/toolkit'
+
 const hexToRgb = x => {
   const cutter = x.substring(1).match(/.{1,2}/g)
   const newArray = []
@@ -28,7 +30,17 @@ const hexToRgb = x => {
     newArray.push(result)
   }
 
-  return newArray
+  const rgb = (
+    <div>
+      {newArray.map(x => (
+        <h2 key={nanoid()} style={{ display: 'inline' }}>
+          {x},
+        </h2>
+      ))}
+    </div>
+  )
+
+  return { rgb, rgbArr: newArray }
 }
 
 export default hexToRgb

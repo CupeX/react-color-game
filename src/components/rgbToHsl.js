@@ -28,7 +28,13 @@ const rgbToHsl = (r, g, b) => {
     h /= 6
   }
 
-  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)]
+  const hsl = (
+    <div>
+      {Math.round(h * 360)}, {Math.round(s * 100)}, {Math.round(l * 100)}
+    </div>
+  )
+
+  return hsl
 }
 
 export default rgbToHsl

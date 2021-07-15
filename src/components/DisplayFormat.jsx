@@ -1,35 +1,23 @@
 import { nanoid } from 'nanoid'
-import { useSelector } from 'react-redux'
 import hexToRgb from './HexToRgb'
 import rgbToHsl from './RgbToHsl'
 
-const DisplayFormat = trueColor => {
-  const activeColorDisplayFormat = useSelector(
-    state => state.gameSettings.activeColorDisplayFormat
-  )
-
-  let content = ''
-
-  const rgb = hexToRgb(trueColor).map(x => (
-    <h2 key={nanoid()} style={{ display: 'inline' }}>
-      {x},
-    </h2>
-  ))
-  const hsl = rgbToHsl(...hexToRgb(trueColor)).map(x => (
-    <h2 key={nanoid()} style={{ display: 'inline' }}>
-      {x},
-    </h2>
-  ))
-
-  if (activeColorDisplayFormat == 'hex') {
-    content = <h2 style={{ display: 'inline' }}>{trueColor}</h2>
-  } else if (activeColorDisplayFormat == 'rgb') {
-    content = <div>{rgb}</div>
-  } else if (activeColorDisplayFormat == 'hsl') {
-    content = <div>{hsl}</div>
+const DisplayFormat = (trueColor, activeColorDisplayFormat) => {
+  const getColorInFormat = (color, colorFormat) => {
+    if (colorFormat == 'hex') {
+      return color
+    } else if (colorFormat == 'rgb') {
+      return hexToRgb(color).rgb
+    } else if (colorFormat == 'hsl') {
+      return rgbToHsl(...hexToRgb(color).rgbArr)
+    }
   }
 
-  return content
+  return (
+    <h2 key={nanoid()} style={{ display: 'inline' }}>
+      {getColorInFormat(trueColor, activeColorDisplayFormat)}
+    </h2>
+  )
 }
 
 export default DisplayFormat
