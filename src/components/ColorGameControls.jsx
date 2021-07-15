@@ -14,10 +14,16 @@ const ColorGameControls = props => {
   const [customLvlName, setCustomLvlName] = useState('')
   const [customLvlBoxes, setCustomLvlBoxes] = useState('')
   const { onLvlHandler } = props
-  const { score, trueColor, customLevels, availableLevels, setCustomLevels } =
-    ReduxData()
+  const {
+    score,
+    trueColor,
+    customLevels,
+    availableLevels,
+    setCustomLevels,
+    activeColorDisplayFormat,
+  } = ReduxData()
 
-  const displayColorFormat = DisplayFormat(trueColor)
+  const displayColorFormat = DisplayFormat(trueColor, activeColorDisplayFormat)
 
   const customLvlHandler = prop => {
     setCustomLvlBoxes(prop)
