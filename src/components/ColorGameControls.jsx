@@ -1,49 +1,21 @@
 import { nanoid } from 'nanoid'
-import {
-  Button,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-} from 'reactstrap'
+import { Button } from 'reactstrap'
 import ButtonComponent from './ButtonComponent'
-import hexToRgb from './HexToRgb'
-import rgbToHsl from './RgbToHsl'
 import { useSelector, useDispatch } from 'react-redux'
 import { setActiveColorDisplayFormat } from '../store/gameSettings'
+import RadioBtns from './RadioBtns'
+import FormComponent from './FormComponent'
+import DisplayFormat from './DisplayFormat'
 
 const ColorGameControls = props => {
-  const dispatch = useDispatch()
   const { score, trueColor, customLvlName, customLvlBoxes, onLvlHandler } =
     props
-  const activeColorDisplayFormat = useSelector(
-    state => state.gameSettings.activeColorDisplayFormat
-  )
+  const dispatch = useDispatch()
   const customLevels = useSelector(state => state.gameSettings.customLevels)
+  const displayColorFormat = DisplayFormat(trueColor)
 
-  const displayFormat = () => {
-    const rgb = hexToRgb(trueColor).map(x => (
-      <h2 key={nanoid()} style={{ display: 'inline' }}>
-        {x},
-      </h2>
-    ))
-    const hsl = rgbToHsl(...hexToRgb(trueColor)).map(x => (
-      <h2 key={nanoid()} style={{ display: 'inline' }}>
-        {x},
-      </h2>
-    ))
-
-    if (activeColorDisplayFormat == 'hex') {
-      return <h2 style={{ display: 'inline' }}>{trueColor}</h2>
-    } else if (activeColorDisplayFormat == 'rgb') {
-      return <div>{rgb}</div>
-    } else if (activeColorDisplayFormat == 'hsl') {
-      return <div>{hsl}</div>
-    }
-  }
-
-  const radioBtnHandler = e => {
-    dispatch(setActiveColorDisplayFormat(e.target.value))
+  const radioBtnHandler = prop => {
+    dispatch(setActiveColorDisplayFormat(prop))
   }
 
   return (
@@ -57,49 +29,12 @@ const ColorGameControls = props => {
           reset score
         </ButtonComponent>
       </div>
+
       <div className='border-bottom border-dark'>
         <h3>Guess the color?</h3>
-        {displayFormat()}
+        {displayColorFormat}
 
-        <div onChange={radioBtnHandler}>
-          <div className='form-check form-check-inline'>
-            <label className='form-check-label' htmlFor='hex'>
-              HEX
-              <input
-                className='form-check-input'
-                id='hex'
-                type='radio'
-                value='hex'
-                name='color'
-              />
-            </label>
-          </div>
-          <div className='form-check form-check-inline'>
-            <label className='form-check-label' htmlFor='rgb'>
-              RGB
-              <input
-                className='form-check-input'
-                id='rgb'
-                type='radio'
-                value='rgb'
-                name='color'
-              />
-            </label>
-          </div>
-
-          <div className='form-check form-check-inline'>
-            <label className='form-check-label' htmlFor='hsl'>
-              HSL
-              <input
-                className='form-check-input'
-                id='hsl'
-                type='radio'
-                value='hsl'
-                name='color'
-              />
-            </label>
-          </div>
-        </div>
+        <RadioBtns onChange={prop => radioBtnHandler(prop)} />
       </div>
 
       <div className='border-bottom border-dark my-3'>
@@ -114,7 +49,6 @@ const ColorGameControls = props => {
               {x.label}
             </Button>
           ))}
-
           <ButtonComponent
             onClick={() => props.onResetHandler()}
             color='danger'
@@ -138,34 +72,14 @@ const ColorGameControls = props => {
           ))}
         </div>
 
-        <form onSubmit={e => props.onFormSubmissionHandler(e)}>
-          <InputGroup className='my-2'>
-            <InputGroupAddon addonType='prepend'>
-              <InputGroupText>add custom lvl name:</InputGroupText>
-            </InputGroupAddon>
-            <Input
-              type='text'
-              name='lvl name'
-              value={customLvlName}
-              onChange={e => props.onCustomLvlNameHandler(e.target.value)}
-            />
-          </InputGroup>
-          <InputGroup className='my-2'>
-            <InputGroupAddon addonType='prepend'>
-              <InputGroupText>add number of boxes:</InputGroupText>
-            </InputGroupAddon>
-            <Input
-              type='number'
-              name='lvls'
-              value={customLvlBoxes}
-              onChange={e => props.onCustomLvlHandler(e.target.value)}
-            />
-          </InputGroup>
+        <FormComponent
+          onSubmit={prop => props.onFormSubmissionHandler(prop)}
+          onChangeName={prop => props.onCustomLvlNameHandler(prop)}
+          onChangeLvl={prop => props.onCustomLvlHandler(prop)}
+          customLvlName={customLvlName}
+          customLvlBoxes={customLvlBoxes}
+        />
 
-          <Button type='submit' color='success' className='m-2'>
-            add custom lvl
-          </Button>
-        </form>
         <Button
           onClick={() => props.onDeleteCustomLvlsHandler()}
           type='btn'
@@ -175,6 +89,7 @@ const ColorGameControls = props => {
           delete custom levels
         </Button>
       </div>
+
       <Button color='primary' onClick={() => props.onHint()}>
         NEED HELP?
       </Button>
