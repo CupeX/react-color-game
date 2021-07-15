@@ -1,35 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
 import hexGenerator from './HexGenerator'
 import { useDispatch } from 'react-redux'
-
 import ReduxData from './ReduxData'
 
 const AppContainer = () => {
   const dispatch = useDispatch()
 
-  const [customLvlName, setCustomLvlName] = useState('')
-  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
-
   const {
     setTrueColor,
     setColors,
-    attemptsIncrement,
     setScore,
     attemptsReset,
     setAllGenerated,
     setBoxesNumber,
-    setCustomLevels,
-    deleteCustomLevels,
     setHintActive,
     setInitialBoxNumber,
     allGenerated,
     score,
-    attempts,
     colors,
     trueColor,
-    availableLevels,
     curBoxNumber,
     hintActive,
     initialBoxNumber,
@@ -63,24 +54,6 @@ const AppContainer = () => {
     dispatch(setAllGenerated(true))
   }
 
-  const checkColorHandler = x => {
-    if (x === trueColor) {
-      alert(
-        `Good job! You get it after ${attempts + 1} attempts, and recive ${
-          curBoxNumber - attempts
-        } points!`
-      )
-      dispatch(attemptsReset())
-      dispatch(setScore(score + curBoxNumber - attempts))
-      resetHandler()
-    } else {
-      const updatedList = colors.filter(item => x !== item)
-
-      dispatch(setColors(updatedList))
-      dispatch(attemptsIncrement())
-    }
-  }
-
   const resetHandler = () => {
     dispatch(setHintActive(false))
     dispatch(setBoxesNumber(initialBoxNumber))
@@ -91,35 +64,6 @@ const AppContainer = () => {
     dispatch(setHintActive(false))
     dispatch(setInitialBoxNumber(boxesNumber))
     dispatch(setBoxesNumber(boxesNumber))
-  }
-
-  const customLvlHandler = prop => {
-    setCustomLvlBoxes(prop)
-  }
-
-  const customLvlNameHandler = prop => {
-    console.log(prop)
-    setCustomLvlName(prop)
-  }
-
-  const deleteCustomLvlsHandler = () => {
-    dispatch(deleteCustomLevels())
-  }
-
-  const formSubmissionHandler = e => {
-    e.preventDefault()
-    if (customLvlName === '' && customLvlBoxes === '') {
-      alert('Please, fill all fields!')
-    } else {
-      setCustomLvlBoxes('')
-      setCustomLvlName('')
-      const addLvl = {
-        label: customLvlName,
-        boxesNumber: +customLvlBoxes,
-      }
-
-      dispatch(setCustomLevels(addLvl))
-    }
   }
 
   const hintHandler = () => {
@@ -146,18 +90,9 @@ const AppContainer = () => {
             onResetHandler={() => resetHandler()}
             onColorToggler={() => colorToggler()}
             onLvlHandler={boxesNumber => lvlHandler(boxesNumber)}
-            onCustomLvlHandler={prop => customLvlHandler(prop)}
-            onCustomLvlNameHandler={prop => customLvlNameHandler(prop)}
-            onDeleteCustomLvlsHandler={() => deleteCustomLvlsHandler()}
-            onFormSubmissionHandler={e => formSubmissionHandler(e)}
-            trueColor={trueColor}
-            customLvlName={customLvlName}
-            customLvlBoxes={customLvlBoxes}
-            availableLevels={availableLevels}
-            score={score}
           />
           <ColorGamePlayground
-            onCheckColor={checkColorHandler}
+            onResetHandler={() => resetHandler()}
             colors={colors}
           />
         </div>
