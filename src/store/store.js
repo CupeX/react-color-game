@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from '../components/counterSlice'
-import boxesNumberReducer from './boxesNumber'
+import gameInProgress from './gameInProgress'
+import gameSettings from './gameSettings'
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
-    boxesNumber: boxesNumberReducer,
+    gameInProgress: gameInProgress.reducer,
+    gameSettings: gameSettings.reducer,
   },
 })

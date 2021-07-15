@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { nanoid } from 'nanoid'
 import {
   Button,
@@ -10,17 +9,25 @@ import {
 import ButtonComponent from './ButtonComponent'
 import hexToRgb from './HexToRgb'
 import rgbToHsl from './RgbToHsl'
+import { useSelector, useDispatch } from 'react-redux'
+import { setActiveColorDisplayFormat } from '../store/gameSettings'
 
 const ColorGameControls = props => {
-  const [colorOption, setColorOption] = useState('hex')
+  const dispatch = useDispatch()
+  const {
+    score,
+    trueColor,
+    availableLevels,
+    customLvlName,
+    customLvlBoxes,
+    onLvlHandler,
+  } = props
+  const activeColorDisplayFormat = useSelector(
+    state => state.gameSettings.activeColorDisplayFormat
+  )
+  const customLevels = useSelector(state => state.gameSettings.customLevels)
 
-  const { score, trueColor, customLvl, customLvlName, customLvlBoxes } = props
-
-  const radioBtnHandler = e => {
-    setColorOption(e.target.value)
-  }
-
-  const content = colorOption => {
+  const displayFormat = () => {
     const rgb = hexToRgb(trueColor).map(x => (
       <h2 key={nanoid()} style={{ display: 'inline' }}>
         {x},
@@ -32,13 +39,17 @@ const ColorGameControls = props => {
       </h2>
     ))
 
-    if (colorOption == 'hex') {
+    if (activeColorDisplayFormat == 'hex') {
       return <h2 style={{ display: 'inline' }}>{trueColor}</h2>
-    } else if (colorOption == 'rgb') {
+    } else if (activeColorDisplayFormat == 'rgb') {
       return <div>{rgb}</div>
-    } else if (colorOption == 'hsl') {
+    } else if (activeColorDisplayFormat == 'hsl') {
       return <div>{hsl}</div>
     }
+  }
+
+  const radioBtnHandler = e => {
+    dispatch(setActiveColorDisplayFormat(e.target.value))
   }
 
   return (
@@ -54,44 +65,44 @@ const ColorGameControls = props => {
       </div>
       <div className='border-bottom border-dark'>
         <h3>Guess the color?</h3>
-        {content(colorOption)}
+        {displayFormat()}
 
         <div onChange={radioBtnHandler}>
           <div className='form-check form-check-inline'>
-            <input
-              className='form-check-input'
-              id='hex'
-              type='radio'
-              value='hex'
-              name='color'
-            />
             <label className='form-check-label' htmlFor='hex'>
               HEX
+              <input
+                className='form-check-input'
+                id='hex'
+                type='radio'
+                value='hex'
+                name='color'
+              />
             </label>
           </div>
           <div className='form-check form-check-inline'>
-            <input
-              className='form-check-input'
-              id='rgb'
-              type='radio'
-              value='rgb'
-              name='color'
-            />
             <label className='form-check-label' htmlFor='rgb'>
               RGB
+              <input
+                className='form-check-input'
+                id='rgb'
+                type='radio'
+                value='rgb'
+                name='color'
+              />
             </label>
           </div>
 
           <div className='form-check form-check-inline'>
-            <input
-              className='form-check-input'
-              id='hsl'
-              type='radio'
-              value='hsl'
-              name='color'
-            />
             <label className='form-check-label' htmlFor='hsl'>
               HSL
+              <input
+                className='form-check-input'
+                id='hsl'
+                type='radio'
+                value='hsl'
+                name='color'
+              />
             </label>
           </div>
         </div>
@@ -99,14 +110,14 @@ const ColorGameControls = props => {
 
       <div className='border-bottom border-dark my-3'>
         <div className='d-flex justify-content-between border-bottom border-dark pb-3'>
-          {props.lvlButton.map(x => (
+          {props.availableLevels.map(x => (
             <Button
               key={nanoid()}
-              onClick={() => props.onLvlHandler(x * 3)}
+              onClick={() => onLvlHandler(x.boxesNumber)}
               color='success'
               className='mx-1'
             >
-              lvl {x}
+              {x.label}
             </Button>
           ))}
 
@@ -120,14 +131,15 @@ const ColorGameControls = props => {
 
         <div className='overflow-auto my-3' style={{ maxHeight: '20vh' }}>
           <h5>Custom levels:</h5>
-          {customLvl.map(x => (
+          {customLevels.map(x => (
             <Button
+              key={nanoid()}
               id={nanoid()}
-              onClick={() => props.onLvlHandler(x.lvlNumBoxes)}
+              onClick={() => onLvlHandler(x.boxesNumber)}
               color='success'
               className='m-2'
             >
-              {x.lvlName}
+              {x.label}
             </Button>
           ))}
         </div>
@@ -169,7 +181,6 @@ const ColorGameControls = props => {
           delete custom levels
         </Button>
       </div>
-
       <Button color='primary' onClick={() => props.onHint()}>
         NEED HELP?
       </Button>
