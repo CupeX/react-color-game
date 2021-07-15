@@ -30,17 +30,7 @@ const hexToRgb = x => {
     newArray.push(result)
   }
 
-  const rgb = (
-    <div>
-      {newArray.map(x => (
-        <h2 key={nanoid()} style={{ display: 'inline' }}>
-          {x},
-        </h2>
-      ))}
-    </div>
-  )
-
-  return { rgb, rgbArr: newArray }
+  return newArray.join(', ')
 }
 
 export default hexToRgb

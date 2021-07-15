@@ -1,15 +1,15 @@
 import { nanoid } from 'nanoid'
+import hexToHsl from './HexToHsl'
 import hexToRgb from './HexToRgb'
-import rgbToHsl from './RgbToHsl'
 
 const DisplayFormat = (trueColor, activeColorDisplayFormat) => {
   const getColorInFormat = (color, colorFormat) => {
     if (colorFormat == 'hex') {
       return color
     } else if (colorFormat == 'rgb') {
-      return hexToRgb(color).rgb
+      return hexToRgb(color)
     } else if (colorFormat == 'hsl') {
-      return rgbToHsl(...hexToRgb(color).rgbArr)
+      return hexToHsl(color)
     }
   }
 
