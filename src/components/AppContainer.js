@@ -9,6 +9,9 @@ import ReduxData from './ReduxData'
 const AppContainer = () => {
   const dispatch = useDispatch()
 
+  const [customLvlName, setCustomLvlName] = useState('')
+  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
+
   const {
     setTrueColor,
     setColors,
@@ -39,9 +42,8 @@ const AppContainer = () => {
   useEffect(() => {
     if (!hintActive) {
       getNewColors()
-    } else {
     }
-  }, [curBoxNumber, allGenerated])
+  }, [curBoxNumber])
 
   const saveScore = () => {
     window.localStorage.setItem('score', score)
@@ -103,9 +105,6 @@ const AppContainer = () => {
   const deleteCustomLvlsHandler = () => {
     dispatch(deleteCustomLevels())
   }
-
-  const [customLvlName, setCustomLvlName] = useState('')
-  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
 
   const formSubmissionHandler = e => {
     e.preventDefault()
