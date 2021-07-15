@@ -2,41 +2,35 @@ import { useEffect, useState } from 'react'
 import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
 import hexGenerator from './HexGenerator'
-import { useSelector, useDispatch } from 'react-redux'
-import {
-  setTrueColor,
-  setColors,
-  attemptsIncrement,
-  setScore,
-  attemptsReset,
-  setAllGenerated,
-} from '../store/gameInProgress'
-import {
-  setBoxesNumber,
-  setCustomLevels,
-  deleteCustomLevels,
-  setHintActive,
-  setInitialBoxNumber,
-} from '../store/gameSettings'
+import { useDispatch } from 'react-redux'
+
+import ReduxData from './ReduxData'
 
 const AppContainer = () => {
   const dispatch = useDispatch()
 
-  const allGenerated = useSelector(state => state.gameInProgress.allGenerated)
-  const score = useSelector(state => state.gameInProgress.score)
-  const attempts = useSelector(state => state.gameInProgress.attempts)
-  const colors = useSelector(state => state.gameInProgress.colors)
-  const trueColor = useSelector(state => state.gameInProgress.trueColor)
-  const activeLevel = useSelector(state => state.gameInProgress.activeLevel)
-  const availableLevels = useSelector(
-    state => state.gameSettings.availableLevels
-  )
-  const curBoxNumber = useSelector(state => state.gameSettings.curBoxNumber)
-  const hintActive = useSelector(state => state.gameSettings.hintActive)
-
-  const initialBoxNumber = useSelector(
-    state => state.gameSettings.initialBoxNumber
-  )
+  const {
+    setTrueColor,
+    setColors,
+    attemptsIncrement,
+    setScore,
+    attemptsReset,
+    setAllGenerated,
+    setBoxesNumber,
+    setCustomLevels,
+    deleteCustomLevels,
+    setHintActive,
+    setInitialBoxNumber,
+    allGenerated,
+    score,
+    attempts,
+    colors,
+    trueColor,
+    availableLevels,
+    curBoxNumber,
+    hintActive,
+    initialBoxNumber,
+  } = ReduxData()
 
   useEffect(() => {
     dispatch(setScore(+window.localStorage.getItem('score')))
