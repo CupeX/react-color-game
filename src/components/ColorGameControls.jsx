@@ -1,18 +1,51 @@
+import { useState } from 'react'
 import { nanoid } from 'nanoid'
 import { Button } from 'reactstrap'
-import ButtonComponent from './ButtonComponent'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setActiveColorDisplayFormat } from '../store/gameSettings'
+import ButtonComponent from './ButtonComponent'
 import RadioBtns from './RadioBtns'
 import FormComponent from './FormComponent'
 import DisplayFormat from './DisplayFormat'
+import ReduxData from './ReduxData'
 
 const ColorGameControls = props => {
-  const { score, trueColor, customLvlName, customLvlBoxes, onLvlHandler } =
-    props
   const dispatch = useDispatch()
-  const customLevels = useSelector(state => state.gameSettings.customLevels)
+  const [customLvlName, setCustomLvlName] = useState('')
+  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
+  const { onLvlHandler } = props
+  const { score, trueColor, customLevels, availableLevels, setCustomLevels } =
+    ReduxData()
+
   const displayColorFormat = DisplayFormat(trueColor)
+
+  const customLvlHandler = prop => {
+    setCustomLvlBoxes(prop)
+  }
+
+  const customLvlNameHandler = prop => {
+    setCustomLvlName(prop)
+  }
+
+  const deleteCustomLvlsHandler = () => {
+    dispatch(deleteCustomLevels())
+  }
+
+  const formSubmissionHandler = e => {
+    e.preventDefault()
+    if (customLvlName === '' && customLvlBoxes === '') {
+      alert('Please, fill all fields!')
+    } else {
+      setCustomLvlBoxes('')
+      setCustomLvlName('')
+      const addLvl = {
+        label: customLvlName,
+        boxesNumber: +customLvlBoxes,
+      }
+
+      dispatch(setCustomLevels(addLvl))
+    }
+  }
 
   const radioBtnHandler = prop => {
     dispatch(setActiveColorDisplayFormat(prop))
@@ -39,7 +72,7 @@ const ColorGameControls = props => {
 
       <div className='border-bottom border-dark my-3'>
         <div className='d-flex justify-content-between border-bottom border-dark pb-3'>
-          {props.availableLevels.map(x => (
+          {availableLevels.map(x => (
             <Button
               key={nanoid()}
               onClick={() => onLvlHandler(x.boxesNumber)}
@@ -73,15 +106,15 @@ const ColorGameControls = props => {
         </div>
 
         <FormComponent
-          onSubmit={prop => props.onFormSubmissionHandler(prop)}
-          onChangeName={prop => props.onCustomLvlNameHandler(prop)}
-          onChangeLvl={prop => props.onCustomLvlHandler(prop)}
+          onSubmit={prop => formSubmissionHandler(prop)}
+          onChangeName={prop => customLvlNameHandler(prop)}
+          onChangeLvl={prop => customLvlHandler(prop)}
           customLvlName={customLvlName}
           customLvlBoxes={customLvlBoxes}
         />
 
         <Button
-          onClick={() => props.onDeleteCustomLvlsHandler()}
+          onClick={() => deleteCustomLvlsHandler()}
           type='btn'
           color='danger'
           className='m-2'

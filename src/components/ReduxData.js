@@ -28,6 +28,7 @@ const ReduxData = () => {
   )
   const curBoxNumber = useSelector(state => state.gameSettings.curBoxNumber)
   const hintActive = useSelector(state => state.gameSettings.hintActive)
+  const customLevels = useSelector(state => state.gameSettings.customLevels)
 
   const initialBoxNumber = useSelector(
     state => state.gameSettings.initialBoxNumber
@@ -55,6 +56,7 @@ const ReduxData = () => {
     curBoxNumber,
     hintActive,
     initialBoxNumber,
+    customLevels,
   }
 }
 
