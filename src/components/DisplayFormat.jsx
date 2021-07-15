@@ -1,8 +1,8 @@
 import { nanoid } from 'nanoid'
-import hexToHsl from './HexToHsl'
-import hexToRgb from './HexToRgb'
+import hexToHsl from '../utils/hexToHsl'
+import hexToRgb from '../utils/hexToRgb'
 
-const DisplayFormat = (trueColor, activeColorDisplayFormat) => {
+const displayFormat = (trueColor, activeColorDisplayFormat) => {
   const getColorInFormat = (color, colorFormat) => {
     if (colorFormat == 'hex') {
       return color
@@ -20,4 +20,4 @@ const DisplayFormat = (trueColor, activeColorDisplayFormat) => {
   )
 }
 
-export default DisplayFormat
+export default displayFormat

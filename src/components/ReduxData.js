@@ -23,9 +23,7 @@ const ReduxData = () => {
   const colors = useSelector(state => state.gameInProgress.colors)
   const trueColor = useSelector(state => state.gameInProgress.trueColor)
   const activeLevel = useSelector(state => state.gameInProgress.activeLevel)
-  const availableLevels = useSelector(
-    state => state.gameSettings.availableLevels
-  )
+  const defaultLevels = useSelector(state => state.gameSettings.defaultLevels)
   const curBoxNumber = useSelector(state => state.gameSettings.curBoxNumber)
   const hintActive = useSelector(state => state.gameSettings.hintActive)
   const customLevels = useSelector(state => state.gameSettings.customLevels)
@@ -55,7 +53,7 @@ const ReduxData = () => {
     colors,
     trueColor,
     activeLevel,
-    availableLevels,
+    defaultLevels,
     curBoxNumber,
     hintActive,
     initialBoxNumber,

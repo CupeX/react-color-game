@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { setScore } from './gameInProgress'
+// import { setScore } from './gameInProgress'
 
 const gameSettings = createSlice({
   name: 'gameSettings',
@@ -7,7 +7,7 @@ const gameSettings = createSlice({
     curBoxNumber: 3,
     initialBoxNumber: 3,
     activeColorDisplayFormat: 'hex',
-    availableLevels: [
+    defaultLevels: [
       { label: 'easy', boxesNumber: 3 },
       { label: 'medium', boxesNumber: 6 },
       { label: 'hard', boxesNumber: 9 },
