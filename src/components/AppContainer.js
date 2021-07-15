@@ -96,6 +96,7 @@ const AppContainer = () => {
   }
 
   const customLvlNameHandler = prop => {
+    console.log(prop)
     setCustomLvlName(prop)
   }
 
