@@ -1,80 +1,84 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
 import hexGenerator from './HexGenerator'
-import { increment } from '../store/boxesNumber'
-import { incrementReducedBoxes } from '../store/reducedBoxesList'
 import { useSelector, useDispatch } from 'react-redux'
+import {
+  setTrueColor,
+  setColors,
+  attemptsIncrement,
+  setScore,
+  attemptsReset,
+  setAllGenerated,
+} from '../store/gameInProgress'
+import {
+  setBoxesNumber,
+  setCustomLevels,
+  deleteCustomLevels,
+} from '../store/gameSettings'
 
 const AppContainer = () => {
   const dispatch = useDispatch()
-  const boxesNumber = useSelector(state => state.boxesNumber.value)
 
-  const reducedBoxesList = useSelector(state => state.reducedBoxesList.value)
-
-  // const [reducedBoxesList, setReducedBoxesList] = useState([])
-  const [lvlButton, setLvlButton] = useState([1, 2, 3, 4, 5])
-  const [customLvlName, setCustomLvlName] = useState('')
-  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
-  const [customLvl, setCustomLvl] = useState([])
-  const [allGenerated, setAllGenerated] = useState(false)
-
-  const [trueColor, setTrueColor] = useState('')
-  const [colors, setColors] = useState([])
-  const [score, setScore] = useState(0)
-  const [scoreCounter, setScoreCounter] = useState(1)
-
-  const getNewColors = () => {
-    const newColors = Array.from(Array(boxesNumber).keys()).map(() =>
-      hexGenerator(6)
-    )
-
-    const randomer = newColors[Math.floor(Math.random() * newColors.length)]
-    setTrueColor(randomer)
-    setColors(newColors)
-    dispatch(incrementReducedBoxes(newColors))
-    // setReducedBoxesList(newColors)
-    setAllGenerated(true)
-  }
+  const allGenerated = useSelector(state => state.gameInProgress.allGenerated)
+  const score = useSelector(state => state.gameInProgress.score)
+  const attempts = useSelector(state => state.gameInProgress.attempts)
+  const colors = useSelector(state => state.gameInProgress.colors)
+  const trueColor = useSelector(state => state.gameInProgress.trueColor)
+  const activeLevel = useSelector(state => state.gameInProgress.activeLevel)
+  const availableLevels = useSelector(
+    state => state.gameSettings.availableLevels
+  )
+  const curBoxNumber = useSelector(state => state.gameSettings.curBoxNumber)
+  const customLevels = useSelector(state => state.gameSettings.customLevels)
 
   useEffect(() => {
     getNewColors()
-    setScore(+window.localStorage.getItem('score'))
-  }, [boxesNumber])
+    dispatch(setScore(+window.localStorage.getItem('score')))
+  }, [curBoxNumber, allGenerated])
 
-  const lvlHandler = prop => {
-    dispatch(increment(prop))
+  const saveScore = () => {
+    window.localStorage.setItem('score', score)
+  }
+  const resetScore = () => {
+    dispatch(setScore(0))
+    window.localStorage.removeItem('score')
+  }
+
+  const getNewColors = () => {
+    const newColors = Array.from(Array(curBoxNumber).keys()).map(() =>
+      hexGenerator(6)
+    )
+    const randomer = newColors[Math.floor(Math.random() * newColors.length)]
+    dispatch(setTrueColor(randomer))
+    dispatch(setColors(newColors))
+    dispatch(setAllGenerated(true))
+  }
+
+  const checkColorHandler = x => {
+    if (x === trueColor) {
+      alert(
+        `Good job! You get it after ${attempts + 1} attempts, and recive ${
+          curBoxNumber - attempts
+        } points!`
+      )
+      dispatch(attemptsReset())
+      dispatch(setScore(score + curBoxNumber - attempts))
+      resetHandler()
+    } else {
+      const updatedList = colors.filter(item => x !== item)
+
+      dispatch(setColors(updatedList))
+      dispatch(attemptsIncrement())
+    }
   }
 
   const resetHandler = () => {
     getNewColors()
   }
 
-  const checkColorHandler = x => {
-    if (x === trueColor) {
-      alert(
-        `Good job! You get it after ${scoreCounter} attempts, and recive ${
-          boxesNumber - scoreCounter + 1
-        } points!`
-      )
-      setScoreCounter(1)
-      setScore(score + boxesNumber - scoreCounter + 1)
-      resetHandler()
-    } else {
-      const updatedList = reducedBoxesList.filter(item => x !== item)
-      dispatch(incrementReducedBoxes(updatedList))
-      // setReducedBoxesList(updatedList)
-      setScoreCounter(scoreCounter + 1)
-    }
-  }
-
-  const resetScore = () => {
-    setScore(0)
-    window.localStorage.removeItem('score')
-  }
-
-  const saveScore = () => {
-    window.localStorage.setItem('score', score)
+  const lvlHandler = prop => {
+    dispatch(setBoxesNumber(prop))
   }
 
   const customLvlHandler = prop => {
@@ -85,6 +89,13 @@ const AppContainer = () => {
     setCustomLvlName(prop)
   }
 
+  const deleteCustomLvlsHandler = () => {
+    dispatch(deleteCustomLevels())
+  }
+
+  const [customLvlName, setCustomLvlName] = useState('')
+  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
+
   const formSubmissionHandler = e => {
     e.preventDefault()
     if (customLvlName === '' && customLvlBoxes === '') {
@@ -93,27 +104,21 @@ const AppContainer = () => {
       setCustomLvlBoxes('')
       setCustomLvlName('')
       const addLvl = {
-        lvlName: customLvlName,
-        lvlNumBoxes: +customLvlBoxes,
+        label: customLvlName,
+        boxesNumber: +customLvlBoxes,
       }
 
-      setCustomLvl(prevState => [addLvl, ...prevState])
+      dispatch(setCustomLevels(addLvl))
     }
-  }
-
-  const deleteCustomLvlsHandler = () => {
-    setCustomLvl([])
   }
 
   const hintHandler = () => {
     const withoutTrueColor = colors.filter(x => x !== trueColor)
     const halfLength = Math.floor(withoutTrueColor.length / 2)
-
     const halfSize = withoutTrueColor.splice(0, halfLength).concat(trueColor)
-    dispatch(incrementReducedBoxes(halfSize))
 
-    // setReducedBoxesList(halfSize)
-    // dispatch(increment(halfSize.length))
+    dispatch(setColors(halfSize))
+    dispatch(setBoxesNumber(halfSize.length))
   }
 
   return (
@@ -134,18 +139,14 @@ const AppContainer = () => {
             onDeleteCustomLvlsHandler={() => deleteCustomLvlsHandler()}
             onFormSubmissionHandler={e => formSubmissionHandler(e)}
             trueColor={trueColor}
-            customLvl={customLvl}
             customLvlName={customLvlName}
             customLvlBoxes={customLvlBoxes}
-            lvlButton={lvlButton}
+            availableLevels={availableLevels}
             score={score}
           />
           <ColorGamePlayground
             onCheckColor={checkColorHandler}
-            background={reducedBoxesList}
-            // trueColor={trueColor}
-            score={score}
-            boxes={boxesNumber}
+            colors={colors}
           />
         </div>
       )}

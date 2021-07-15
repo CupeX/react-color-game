@@ -1,38 +1,42 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export default gameInProgress({
-  reducer: {
-    boxesNumber: boxesNumber.Reducer,
-    reducedBoxesList: reducedBoxesList.Reducer,
-  },
-})
-
-const boxesNumber = createSlice({
-  name: 'boxesNumber',
+const gameInProgress = createSlice({
+  name: 'gameInProgress',
   initialState: {
-    value: 3,
+    trueColor: '',
+    colors: [],
+    score: 0,
+    attempts: 0,
+    activeLevel: 'easy',
+    allGenerated: false,
   },
   reducers: {
-    changeBoxesNumber(state, action) {
-      state.value = action.payload
+    setScore(state, action) {
+      state.score = action.payload
+    },
+    setTrueColor(state, action) {
+      state.trueColor = action.payload
+    },
+    setColors(state, action) {
+      state.colors = action.payload
+    },
+    attemptsIncrement(state) {
+      state.attempts++
+    },
+    attemptsReset(state) {
+      state.attempts = 0
+    },
+    setAllGenerated(state, action) {
+      state.allGenerated = action.payload
     },
   },
 })
-export const { changeBoxesNumber } = boxesNumber.actions
-// export default boxesNumber.reducer;
 
-const reducedBoxesNumber = createSlice({
-  name: 'reducedBoxesNumber',
-  initialState: {
-    value: [],
-  },
-  reducers: {
-    changeReducedBoxesNumber: {
-      reducer: (state, action) => {
-        state.value = action.payload
-      },
-    },
-  },
-})
+export const setScore = gameInProgress.actions.setScore
+export const setTrueColor = gameInProgress.actions.setTrueColor
+export const setColors = gameInProgress.actions.setColors
+export const attemptsIncrement = gameInProgress.actions.attemptsIncrement
+export const attemptsReset = gameInProgress.actions.attemptsReset
+export const setAllGenerated = gameInProgress.actions.setAllGenerated
 
-export const { changeReducedBoxesNumber } = reducedBoxesNumber.actions
+export default gameInProgress
