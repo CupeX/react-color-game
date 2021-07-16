@@ -4,6 +4,7 @@ import useGameInProgress from './useGameInProgress'
 const useCheckRightColor = () => {
   const dispatch = useDispatch()
   const {
+    score,
     attempts,
     maxPoints,
     trueColor,
@@ -16,8 +17,6 @@ const useCheckRightColor = () => {
     setBoxesNumber,
   } = useGameInProgress()
 
-  console.log(activeLvlBoxCount)
-
   const checkColor = colorToCheck => {
     if (colorToCheck === trueColor) {
       alert(
@@ -25,7 +24,7 @@ const useCheckRightColor = () => {
           maxPoints - attempts
         } points!`
       )
-      dispatch(setScore(maxPoints - attempts))
+      dispatch(setScore(score + maxPoints - attempts))
       dispatch(setBoxesNumber(activeLvlBoxCount))
       dispatch(attemptsReset())
     } else {

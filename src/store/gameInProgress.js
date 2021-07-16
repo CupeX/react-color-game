@@ -15,7 +15,7 @@ const gameInProgress = createSlice({
   },
   reducers: {
     setScore(state, action) {
-      state.score += action.payload
+      state.score = action.payload
     },
     setTrueColor(state, action) {
       state.trueColor = action.payload

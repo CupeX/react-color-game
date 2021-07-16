@@ -3,9 +3,6 @@ import { setCustomLevels, deleteCustomLevels } from '../store/gameSettings'
 
 const useGameSettings = () => {
   const defaultLevels = useSelector(state => state.gameSettings.defaultLevels)
-  const activeLvlBoxCount = useSelector(
-    state => state.gameSettings.activeLvlBoxCount
-  )
   const hintActive = useSelector(state => state.gameSettings.hintActive)
   const customLevels = useSelector(state => state.gameSettings.customLevels)
   const activeColorDisplayFormat = useSelector(
@@ -19,7 +16,6 @@ const useGameSettings = () => {
     setCustomLevels,
     deleteCustomLevels,
     defaultLevels,
-    activeLvlBoxCount,
     hintActive,
     customLevels,
     activeColorDisplayFormat,
