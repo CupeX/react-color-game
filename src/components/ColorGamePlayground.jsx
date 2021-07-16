@@ -6,7 +6,7 @@ import useGameInProgress from '../hooks/useGameInProgress'
 const ColorGamePlayground = props => {
   const dispatch = useDispatch()
 
-  const { curBoxNumber } = useGameSettings()
+  const { activeLvlBoxCount } = useGameSettings()
 
   const {
     trueColor,
@@ -23,11 +23,11 @@ const ColorGamePlayground = props => {
     if (x === trueColor) {
       alert(
         `Good job! You get it after ${attempts + 1} attempts, and recive ${
-          curBoxNumber - attempts
+          activeLvlBoxCount - attempts
         } points!`
       )
       dispatch(attemptsReset())
-      dispatch(setScore(score + curBoxNumber - attempts))
+      dispatch(setScore(score + activeLvlBoxCount - attempts))
       props.onResetHandler()
     } else {
       const updatedList = colors.filter(item => x !== item)

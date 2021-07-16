@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-// import { setScore } from './gameInProgress'
 
 const gameSettings = createSlice({
   name: 'gameSettings',
   initialState: {
-    curBoxNumber: 3,
+    activeLvlBoxCount: 3,
     initialBoxNumber: 3,
     activeColorDisplayFormat: 'hex',
     defaultLevels: [
@@ -15,18 +14,12 @@ const gameSettings = createSlice({
     customLevels: [],
     hintActive: false,
   },
-  extraReducers: {
-    // [setScore]: (state, action) => {
-    //   console.log(state.activeColorDisplayFormat, 'hello world')
-    //   console.log(action)
-    // },
-  },
   reducers: {
     setActiveColorDisplayFormat(state, action) {
       state.activeColorDisplayFormat = action.payload
     },
     setBoxesNumber(state, action) {
-      state.curBoxNumber = action.payload
+      state.activeLvlBoxCount = action.payload
     },
     setCustomLevels(state, action) {
       state.customLevels.push(action.payload)

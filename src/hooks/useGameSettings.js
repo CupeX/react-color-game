@@ -9,7 +9,9 @@ import {
 
 const useGameSettings = () => {
   const defaultLevels = useSelector(state => state.gameSettings.defaultLevels)
-  const curBoxNumber = useSelector(state => state.gameSettings.curBoxNumber)
+  const activeLvlBoxCount = useSelector(
+    state => state.gameSettings.activeLvlBoxCount
+  )
   const hintActive = useSelector(state => state.gameSettings.hintActive)
   const customLevels = useSelector(state => state.gameSettings.customLevels)
   const activeColorDisplayFormat = useSelector(
@@ -26,7 +28,7 @@ const useGameSettings = () => {
     setHintActive,
     setInitialBoxNumber,
     defaultLevels,
-    curBoxNumber,
+    activeLvlBoxCount,
     hintActive,
     customLevels,
     activeColorDisplayFormat,

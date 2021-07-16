@@ -15,8 +15,12 @@ const ColorGameControls = props => {
 
   const dispatch = useDispatch()
 
-  const { defaultLevels, customLevels, activeColorDisplayFormat } =
-    useGameSettings()
+  const {
+    defaultLevels,
+    customLevels,
+    activeColorDisplayFormat,
+    deleteCustomLevels,
+  } = useGameSettings()
 
   const { score, trueColor } = useGameInProgress()
 

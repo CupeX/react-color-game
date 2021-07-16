@@ -6,6 +6,7 @@ import {
   setScore,
   attemptsReset,
   setAllGenerated,
+  startNewGame,
 } from '../store/gameInProgress'
 
 const useGameInProgress = () => {
@@ -29,6 +30,7 @@ const useGameInProgress = () => {
     colors,
     trueColor,
     activeLevel,
+    startNewGame,
   }
 }
 

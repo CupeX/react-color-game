@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
-import hexGenerator from '../utils/hexGenerator'
 import { useDispatch } from 'react-redux'
 import useGameSettings from '../hooks/useGameSettings'
 import useGameInProgress from '../hooks/useGameInProgress'
@@ -13,17 +12,16 @@ const AppContainer = () => {
     setBoxesNumber,
     setHintActive,
     setInitialBoxNumber,
-    curBoxNumber,
+    activeLvlBoxCount,
     hintActive,
     initialBoxNumber,
   } = useGameSettings()
 
   const {
-    setTrueColor,
+    startNewGame,
     setColors,
     setScore,
     attemptsReset,
-    setAllGenerated,
     allGenerated,
     score,
     colors,
@@ -49,16 +47,10 @@ const AppContainer = () => {
   }
 
   const getNewColors = () => {
-    const newColors = Array.from(Array(curBoxNumber).keys()).map(() =>
-      hexGenerator(6)
-    )
-    const randomer = newColors[Math.floor(Math.random() * newColors.length)]
-    dispatch(setTrueColor(randomer))
-    dispatch(setColors(newColors))
-    dispatch(setAllGenerated(true))
+    dispatch(startNewGame(activeLvlBoxCount))
   }
 
-  const resetHandler = () => {
+  const resetLevelHandler = () => {
     dispatch(setHintActive(false))
     dispatch(setBoxesNumber(initialBoxNumber))
     getNewColors()
@@ -91,12 +83,12 @@ const AppContainer = () => {
             onHint={() => hintHandler()}
             onSaveScore={() => saveScore()}
             onResetScore={() => resetScore()}
-            onResetHandler={() => resetHandler()}
+            onResetHandler={() => resetLevelHandler()}
             onColorToggler={() => colorToggler()}
             onLvlHandler={boxesNumber => lvlHandler(boxesNumber)}
           />
           <ColorGamePlayground
-            onResetHandler={() => resetHandler()}
+            onResetHandler={() => resetLevelHandler()}
             colors={colors}
           />
         </div>
