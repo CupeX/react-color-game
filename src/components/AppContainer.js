@@ -2,23 +2,18 @@ import { useEffect } from 'react'
 import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
 import { useDispatch } from 'react-redux'
-import useGameSettings from '../hooks/useGameSettings'
 import useGameInProgress from '../hooks/useGameInProgress'
 
 const AppContainer = () => {
   const dispatch = useDispatch()
 
-  const { activeLvlBoxCount } = useGameSettings()
-  const { setScore, allGenerated, setBoxesNumber } = useGameInProgress()
-
-  console.log(activeLvlBoxCount)
+  const { activeLvlBoxCount, setScore, allGenerated, setBoxesNumber } =
+    useGameInProgress()
 
   useEffect(() => {
-    if (activeLvlBoxCount !== undefined) {
-      dispatch(setBoxesNumber(activeLvlBoxCount))
-    }
+    dispatch(setBoxesNumber(activeLvlBoxCount))
     dispatch(setScore(+window.localStorage.getItem('score')))
-  }, [activeLvlBoxCount])
+  }, [])
 
   return (
     <div>

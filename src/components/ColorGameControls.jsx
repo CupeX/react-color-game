@@ -18,11 +18,16 @@ const ColorGameControls = () => {
     customLevels,
     activeColorDisplayFormat,
     deleteCustomLevels,
-    activeLvlBoxCount,
   } = useGameSettings()
 
-  const { setBoxesNumber, score, trueColor, useHint, setScore } =
-    useGameInProgress()
+  const {
+    setBoxesNumber,
+    score,
+    trueColor,
+    useHint,
+    setScore,
+    activeLvlBoxCount,
+  } = useGameInProgress()
 
   let {
     testLabel,
