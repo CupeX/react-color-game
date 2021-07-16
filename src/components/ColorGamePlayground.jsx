@@ -1,40 +1,13 @@
 import { nanoid } from 'nanoid'
-import { useDispatch } from 'react-redux'
-import useGameSettings from '../hooks/useGameSettings'
+import useCheckRightColor from '../hooks/useCheckRightColor'
 import useGameInProgress from '../hooks/useGameInProgress'
 
-const ColorGamePlayground = props => {
-  const dispatch = useDispatch()
+const ColorGamePlayground = () => {
+  const {colors} = useGameInProgress()  
+  const {checkColor} = useCheckRightColor() 
 
-  const { activeLvlBoxCount } = useGameSettings()
-
-  const {
-    trueColor,
-    attempts,
-    score,
-    colors,
-    attemptsReset,
-    attemptsIncrement,
-    setScore,
-    setColors,
-  } = useGameInProgress()
-
-  const checkColorHandler = x => {
-    if (x === trueColor) {
-      alert(
-        `Good job! You get it after ${attempts + 1} attempts, and recive ${
-          activeLvlBoxCount - attempts
-        } points!`
-      )
-      dispatch(attemptsReset())
-      dispatch(setScore(score + activeLvlBoxCount - attempts))
-      props.onResetHandler()
-    } else {
-      const updatedList = colors.filter(item => x !== item)
-
-      dispatch(setColors(updatedList))
-      dispatch(attemptsIncrement())
-    }
+  const colorCheckHandler = x => {
+    checkColor(x)
   }
 
   return (
@@ -45,7 +18,7 @@ const ColorGamePlayground = props => {
             <button
               className='p-5 m-1'
               style={{ background: x }}
-              onClick={() => checkColorHandler(x)}
+              onClick={() => colorCheckHandler(x)}
             />
           </div>
         ))}

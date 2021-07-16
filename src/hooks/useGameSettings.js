@@ -1,11 +1,5 @@
 import { useSelector } from 'react-redux'
-import {
-  setBoxesNumber,
-  setCustomLevels,
-  deleteCustomLevels,
-  setHintActive,
-  setInitialBoxNumber,
-} from '../store/gameSettings'
+import { setCustomLevels, deleteCustomLevels } from '../store/gameSettings'
 
 const useGameSettings = () => {
   const defaultLevels = useSelector(state => state.gameSettings.defaultLevels)
@@ -22,11 +16,8 @@ const useGameSettings = () => {
   )
 
   return {
-    setBoxesNumber,
     setCustomLevels,
     deleteCustomLevels,
-    setHintActive,
-    setInitialBoxNumber,
     defaultLevels,
     activeLvlBoxCount,
     hintActive,

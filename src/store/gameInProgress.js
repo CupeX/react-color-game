@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import generateGameColors from '../utils/generateGameColors'
-import { setBoxesNumber } from './gameSettings'
 
 const gameInProgress = createSlice({
   name: 'gameInProgress',
@@ -11,15 +10,12 @@ const gameInProgress = createSlice({
     attempts: 0,
     activeLevel: 'easy',
     allGenerated: true,
-  },
-  extraReducers: {
-    [setBoxesNumber]: (state, action) => {
-      gameInProgress.caseReducers.startNewGame
-    },
+    activeLvlBoxCount: 3,
+    maxPoints: 3,
   },
   reducers: {
     setScore(state, action) {
-      state.score = action.payload
+      state.score += action.payload
     },
     setTrueColor(state, action) {
       state.trueColor = action.payload
@@ -36,13 +32,29 @@ const gameInProgress = createSlice({
     setAllGenerated(state, action) {
       state.allGenerated = action.payload
     },
+    setBoxesNumber(state, action) {
+      gameInProgress.caseReducers.startNewGame(state, action.payload)
+      state.activeLvlBoxCount = action.payload
+      state.maxPoints = action.payload
+    },
     startNewGame(state, action) {
-      console.log(state, action.payload)
-      const { newColors, trueColor } = generateGameColors(action.payload)
+      const { newColors, trueColor } = generateGameColors(action)
 
       state.trueColor = trueColor
       state.colors = newColors
       state.allGenerated = true
+    },
+    useHint(state) {
+      const withoutTrueColor = state.colors.filter(x => x !== state.trueColor)
+      const halfLength = Math.floor(withoutTrueColor.length / 2)
+      const halfSize = withoutTrueColor
+        .splice(0, halfLength)
+        .concat(state.trueColor)
+        .sort(() => (Math.random() > 0.5 ? 1 : -1))
+
+      state.attempts = 0
+      state.colors = halfSize
+      state.maxPoints = halfLength + 1
     },
   },
 })
@@ -50,9 +62,12 @@ const gameInProgress = createSlice({
 export const setScore = gameInProgress.actions.setScore
 export const setTrueColor = gameInProgress.actions.setTrueColor
 export const setColors = gameInProgress.actions.setColors
+export const setBoxesNumber = gameInProgress.actions.setBoxesNumber
 export const attemptsIncrement = gameInProgress.actions.attemptsIncrement
 export const attemptsReset = gameInProgress.actions.attemptsReset
 export const setAllGenerated = gameInProgress.actions.setAllGenerated
 export const startNewGame = gameInProgress.actions.startNewGame
+export const useHint = gameInProgress.actions.useHint
+export const checkForRightColor = gameInProgress.actions.checkForRightColor
 
 export default gameInProgress

@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import {
+  setBoxesNumber,
   setTrueColor,
   setColors,
   attemptsIncrement,
@@ -7,6 +8,8 @@ import {
   attemptsReset,
   setAllGenerated,
   startNewGame,
+  useHint,
+  checkForRightColor,
 } from '../store/gameInProgress'
 
 const useGameInProgress = () => {
@@ -16,8 +19,13 @@ const useGameInProgress = () => {
   const colors = useSelector(state => state.gameInProgress.colors)
   const trueColor = useSelector(state => state.gameInProgress.trueColor)
   const activeLevel = useSelector(state => state.gameInProgress.activeLevel)
+  const maxPoints = useSelector(state => state.gameInProgress.maxPoints)
+  const activeLvlBoxCount = useSelector(
+    state => state.gameInProgress.activeLvlBoxCount
+  )
 
   return {
+    setBoxesNumber,
     setTrueColor,
     setColors,
     attemptsIncrement,
@@ -31,6 +39,10 @@ const useGameInProgress = () => {
     trueColor,
     activeLevel,
     startNewGame,
+    useHint,
+    maxPoints,
+    checkForRightColor,
+    activeLvlBoxCount,
   }
 }
 

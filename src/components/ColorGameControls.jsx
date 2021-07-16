@@ -10,9 +10,7 @@ import useCreateCustomLvl from '../hooks/useCreateCustomLvl'
 import useGameSettings from '../hooks/useGameSettings'
 import useGameInProgress from '../hooks/useGameInProgress'
 
-const ColorGameControls = props => {
-  const { onLvlHandler } = props
-
+const ColorGameControls = () => {
   const dispatch = useDispatch()
 
   const {
@@ -20,9 +18,11 @@ const ColorGameControls = props => {
     customLevels,
     activeColorDisplayFormat,
     deleteCustomLevels,
+    activeLvlBoxCount,
   } = useGameSettings()
 
-  const { score, trueColor } = useGameInProgress()
+  const { setBoxesNumber, score, trueColor, useHint, setScore } =
+    useGameInProgress()
 
   let {
     testLabel,
@@ -64,14 +64,30 @@ const ColorGameControls = props => {
     }
   }
 
+  const saveScore = () => {
+    window.localStorage.setItem('score', score)
+  }
+  const resetScore = () => {
+    dispatch(setScore(0))
+    window.localStorage.removeItem('score')
+  }
+
+  const lvlHandler = boxesNumber => {
+    dispatch(setBoxesNumber(boxesNumber))
+  }
+
+  const hintHandler = () => {
+    dispatch(useHint())
+  }
+
   return (
     <div className='col-4 vh-100'>
       <div className='d-flex justify-content-between border-bottom border-dark my-3 pb-3'>
         <h2>score: {score}</h2>
-        <ButtonComponent onClick={() => props.onSaveScore()} color='success'>
+        <ButtonComponent onClick={() => saveScore()} color='success'>
           save score
         </ButtonComponent>
-        <ButtonComponent onClick={() => props.onResetScore()} color='danger'>
+        <ButtonComponent onClick={() => resetScore()} color='danger'>
           reset score
         </ButtonComponent>
       </div>
@@ -88,7 +104,7 @@ const ColorGameControls = props => {
           {defaultLevels.map(x => (
             <Button
               key={nanoid()}
-              onClick={() => onLvlHandler(x.boxesNumber)}
+              onClick={() => lvlHandler(x.boxesNumber)}
               color='success'
               className='mx-1'
             >
@@ -96,7 +112,7 @@ const ColorGameControls = props => {
             </Button>
           ))}
           <ButtonComponent
-            onClick={() => props.onResetHandler()}
+            onClick={() => lvlHandler(activeLvlBoxCount)}
             color='danger'
           >
             RESET LVL
@@ -109,7 +125,7 @@ const ColorGameControls = props => {
             <Button
               key={nanoid()}
               id={nanoid()}
-              onClick={() => onLvlHandler(x.boxesNumber)}
+              onClick={() => lvlHandler(x.boxesNumber)}
               color='success'
               className='m-2'
             >
@@ -136,7 +152,7 @@ const ColorGameControls = props => {
         </Button>
       </div>
 
-      <Button color='primary' onClick={() => props.onHint()}>
+      <Button color='primary' onClick={() => hintHandler()}>
         NEED HELP?
       </Button>
     </div>
