@@ -3,10 +3,20 @@ import ColorGamePlayground from './ColorGamePlayground'
 import ColorGameControls from './ColorGameControls'
 import hexGenerator from '../utils/hexGenerator'
 import { useDispatch } from 'react-redux'
-import ReduxData from './ReduxData'
+import useGameSettings from '../hooks/useGameSettings'
+import useGameInProgress from '../hooks/useGameInProgress'
 
 const AppContainer = () => {
   const dispatch = useDispatch()
+
+  const {
+    setBoxesNumber,
+    setHintActive,
+    setInitialBoxNumber,
+    curBoxNumber,
+    hintActive,
+    initialBoxNumber,
+  } = useGameSettings()
 
   const {
     setTrueColor,
@@ -14,17 +24,11 @@ const AppContainer = () => {
     setScore,
     attemptsReset,
     setAllGenerated,
-    setBoxesNumber,
-    setHintActive,
-    setInitialBoxNumber,
     allGenerated,
     score,
     colors,
     trueColor,
-    curBoxNumber,
-    hintActive,
-    initialBoxNumber,
-  } = ReduxData()
+  } = useGameInProgress()
 
   useEffect(() => {
     dispatch(setScore(+window.localStorage.getItem('score')))

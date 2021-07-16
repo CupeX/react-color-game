@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { nanoid } from 'nanoid'
 import { Button } from 'reactstrap'
 import { useDispatch } from 'react-redux'
@@ -7,27 +6,20 @@ import ButtonComponent from '../common/ButtonComponent'
 import RadioBtns from '../common/RadioBtns'
 import FormComponent from './FormComponent'
 import displayFormat from './displayFormat'
-import ReduxData from './ReduxData'
-import useCreateCustomLvl from '../hooks/createCustomLvl'
+import useCreateCustomLvl from '../hooks/useCreateCustomLvl'
+import useGameSettings from '../hooks/useGameSettings'
+import useGameInProgress from '../hooks/useGameInProgress'
 
 const ColorGameControls = props => {
-  const dispatch = useDispatch()
-
-  // const [customLvlName, setCustomLvlName] = useState('')
-  // const [customLvlBoxes, setCustomLvlBoxes] = useState('')
-
   const { onLvlHandler } = props
 
-  const {
-    score,
-    trueColor,
-    customLevels,
-    defaultLevels,
-    // setCustomLevels,
-    activeColorDisplayFormat,
-  } = ReduxData()
+  const dispatch = useDispatch()
 
-  // test with custom hook
+  const { defaultLevels, customLevels, activeColorDisplayFormat } =
+    useGameSettings()
+
+  const { score, trueColor } = useGameInProgress()
+
   let {
     testLabel,
     setTestLabel,
@@ -42,12 +34,10 @@ const ColorGameControls = props => {
 
   const customLvlBoxesHandler = prop => {
     setTestBoxesNumber(prop)
-    // setCustomLvlBoxes(prop)
   }
 
   const customLvlNameHandler = prop => {
     setTestLabel(prop)
-    // setCustomLvlName(prop)
   }
 
   const deleteCustomLvlsHandler = () => {
@@ -59,10 +49,8 @@ const ColorGameControls = props => {
     if (testLabel === '' && testBoxesNumber === '') {
       alert('Please, fill all fields!')
     } else {
-      // setCustomLvlBoxes('')
-      // setCustomLvlName('')
-      setTestBoxesNumber('')
       setTestLabel('')
+      setTestBoxesNumber('')
       const addLvl = {
         label: testLabel,
         boxesNumber: +testBoxesNumber,
