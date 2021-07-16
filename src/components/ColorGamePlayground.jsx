@@ -1,20 +1,23 @@
 import { nanoid } from 'nanoid'
 import { useDispatch } from 'react-redux'
-import ReduxData from './ReduxData'
+import useGameSettings from '../hooks/useGameSettings'
+import useGameInProgress from '../hooks/useGameInProgress'
 
 const ColorGamePlayground = props => {
   const dispatch = useDispatch()
+
+  const { curBoxNumber } = useGameSettings()
+
   const {
     trueColor,
     attempts,
-    curBoxNumber,
     score,
     colors,
     attemptsReset,
+    attemptsIncrement,
     setScore,
     setColors,
-    attemptsIncrement,
-  } = ReduxData()
+  } = useGameInProgress()
 
   const checkColorHandler = x => {
     if (x === trueColor) {

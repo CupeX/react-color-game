@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import ReduxData from '../components/ReduxData'
+import useGameSettings from './useGameSettings'
 
-const useCreateCustomLvl = (x, y) => {
-  const { setCustomLevels } = ReduxData()
+const useCreateCustomLvl = () => {
+  const { setCustomLevels } = useGameSettings()
   const [testLabel, setTestLabel] = useState('')
   const [testBoxesNumber, setTestBoxesNumber] = useState('')
 
