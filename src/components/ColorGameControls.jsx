@@ -4,21 +4,16 @@ import { useDispatch } from 'react-redux'
 import { setActiveColorDisplayFormat } from '../store/gameSettings'
 import ButtonComponent from '../common/ButtonComponent'
 import RadioBtns from '../common/RadioBtns'
-import FormComponent from './FormComponent'
 import displayFormat from './displayFormat'
-import useCreateCustomLvl from '../hooks/useCreateCustomLvl'
 import useGameSettings from '../hooks/useGameSettings'
 import useGameInProgress from '../hooks/useGameInProgress'
+import CustomLevelCreator from './CustomLevelCreator'
 
 const ColorGameControls = () => {
   const dispatch = useDispatch()
 
-  const {
-    defaultLevels,
-    customLevels,
-    activeColorDisplayFormat,
-    deleteCustomLevels,
-  } = useGameSettings()
+  const { defaultLevels, customLevels, activeColorDisplayFormat } =
+    useGameSettings()
 
   const {
     setBoxesNumber,
@@ -29,44 +24,8 @@ const ColorGameControls = () => {
     activeLvlBoxCount,
   } = useGameInProgress()
 
-  let {
-    testLabel,
-    setTestLabel,
-    testBoxesNumber,
-    setTestBoxesNumber,
-    setCustomLevels,
-  } = useCreateCustomLvl()
-
   const radioBtnHandler = prop => {
     dispatch(setActiveColorDisplayFormat(prop))
-  }
-
-  const customLvlBoxesHandler = prop => {
-    setTestBoxesNumber(prop)
-  }
-
-  const customLvlNameHandler = prop => {
-    setTestLabel(prop)
-  }
-
-  const deleteCustomLvlsHandler = () => {
-    dispatch(deleteCustomLevels())
-  }
-
-  const formSubmissionHandler = e => {
-    e.preventDefault()
-    if (testLabel === '' && testBoxesNumber === '') {
-      alert('Please, fill all fields!')
-    } else {
-      setTestLabel('')
-      setTestBoxesNumber('')
-      const addLvl = {
-        label: testLabel,
-        boxesNumber: +testBoxesNumber,
-      }
-
-      dispatch(setCustomLevels(addLvl))
-    }
   }
 
   const saveScore = () => {
@@ -139,22 +98,7 @@ const ColorGameControls = () => {
           ))}
         </div>
 
-        <FormComponent
-          onSubmit={prop => formSubmissionHandler(prop)}
-          onChangeName={prop => customLvlNameHandler(prop)}
-          onChangeBoxes={prop => customLvlBoxesHandler(prop)}
-          customLvlName={testLabel}
-          customLvlBoxes={testBoxesNumber}
-        />
-
-        <Button
-          onClick={() => deleteCustomLvlsHandler()}
-          type='btn'
-          color='danger'
-          className='m-2'
-        >
-          delete custom levels
-        </Button>
+        <CustomLevelCreator />
       </div>
 
       <Button color='primary' onClick={() => hintHandler()}>
