@@ -5,7 +5,7 @@ import useGameSettings from './useGameSettings'
 const useCreateCustomLvl = () => {
   const dispatch = useDispatch()
 
-  const { deleteCustomLevels } = useGameSettings()
+  const { deleteCustomLevels, setCustomLevels } = useGameSettings()
 
   const [customLvlName, setCustomLvlName] = useState('')
   const [customLvlBoxes, setCustomLvlBoxes] = useState('')
@@ -22,6 +22,22 @@ const useCreateCustomLvl = () => {
     dispatch(deleteCustomLevels())
   }
 
+  const formSubmissionHandler = e => {
+    e.preventDefault()
+    if (customLvlName === '' && customLvlBoxes === '') {
+      alert('Please, fill all fields!')
+    } else {
+      setCustomLvlName('')
+      setCustomLvlBoxes('')
+      const addLvl = {
+        label: customLvlName,
+        boxesNumber: +customLvlBoxes,
+      }
+
+      dispatch(setCustomLevels(addLvl))
+    }
+  }
+
   return {
     customLvlName,
     customLvlBoxes,
@@ -30,6 +46,7 @@ const useCreateCustomLvl = () => {
     customLvlNameHandler,
     customLvlBoxesHandler,
     deleteCustomLvlsHandler,
+    formSubmissionHandler,
   }
 }
 
