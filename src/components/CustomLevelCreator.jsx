@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   Button,
@@ -7,26 +6,23 @@ import {
   InputGroupText,
   Input,
 } from 'reactstrap'
+import useCreateCustomLvl from '../hooks/useCreateCustomLvl'
 import useGameSettings from '../hooks/useGameSettings'
 
 const CustomLevelCreator = () => {
   const dispatch = useDispatch()
+
   const { setCustomLevels } = useGameSettings()
 
-  const [customLvlName, setCustomLvlName] = useState('')
-  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
-
-  const customLvlBoxesHandler = prop => {
-    setCustomLvlBoxes(prop)
-  }
-
-  const customLvlNameHandler = prop => {
-    setCustomLvlName(prop)
-  }
-
-  const deleteCustomLvlsHandler = () => {
-    dispatch(deleteCustomLevels())
-  }
+  const {
+    customLvlName,
+    customLvlBoxes,
+    setCustomLvlName,
+    setCustomLvlBoxes,
+    customLvlNameHandler,
+    customLvlBoxesHandler,
+    deleteCustomLvlsHandler
+  } = useCreateCustomLvl()
 
   const formSubmissionHandler = e => {
     e.preventDefault()
@@ -74,6 +70,7 @@ const CustomLevelCreator = () => {
           add custom lvl
         </Button>
 
+      </form>
         <Button
           onClick={() => deleteCustomLvlsHandler()}
           type='btn'
@@ -82,7 +79,6 @@ const CustomLevelCreator = () => {
         >
           delete custom levels
         </Button>
-      </form>
     </div>
   )
 }
