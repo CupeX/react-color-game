@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import {
   Button,
   InputGroup,
@@ -7,43 +5,18 @@ import {
   InputGroupText,
   Input,
 } from 'reactstrap'
-import useGameSettings from '../hooks/useGameSettings'
+import useCreateCustomLvl from '../hooks/useCreateCustomLvl'
 
 const CustomLevelCreator = () => {
-  const dispatch = useDispatch()
-  const { setCustomLevels } = useGameSettings()
-
-  const [customLvlName, setCustomLvlName] = useState('')
-  const [customLvlBoxes, setCustomLvlBoxes] = useState('')
-
-  const customLvlBoxesHandler = prop => {
-    setCustomLvlBoxes(prop)
-  }
-
-  const customLvlNameHandler = prop => {
-    setCustomLvlName(prop)
-  }
-
-  const deleteCustomLvlsHandler = () => {
-    dispatch(deleteCustomLevels())
-  }
-
-  const formSubmissionHandler = e => {
-    e.preventDefault()
-    if (customLvlName === '' && customLvlBoxes === '') {
-      alert('Please, fill all fields!')
-    } else {
-      setCustomLvlName('')
-      setCustomLvlBoxes('')
-      const addLvl = {
-        label: customLvlName,
-        boxesNumber: +customLvlBoxes,
-      }
-
-      dispatch(setCustomLevels(addLvl))
-    }
-  }
-
+  const {
+    customLvlName,
+    customLvlBoxes,
+    customLvlNameHandler,
+    customLvlBoxesHandler,
+    deleteCustomLvlsHandler,
+    formSubmissionHandler
+  } = useCreateCustomLvl()
+ 
   return (
     <div>
       <form onSubmit={e => formSubmissionHandler(e)}>
@@ -74,6 +47,7 @@ const CustomLevelCreator = () => {
           add custom lvl
         </Button>
 
+      </form>
         <Button
           onClick={() => deleteCustomLvlsHandler()}
           type='btn'
@@ -82,7 +56,6 @@ const CustomLevelCreator = () => {
         >
           delete custom levels
         </Button>
-      </form>
     </div>
   )
 }

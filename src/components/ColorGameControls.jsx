@@ -8,6 +8,7 @@ import displayFormat from './displayFormat'
 import useGameSettings from '../hooks/useGameSettings'
 import useGameInProgress from '../hooks/useGameInProgress'
 import CustomLevelCreator from './CustomLevelCreator'
+import { persistor } from '../store/store'
 
 const ColorGameControls = () => {
   const dispatch = useDispatch()
@@ -28,12 +29,12 @@ const ColorGameControls = () => {
     dispatch(setActiveColorDisplayFormat(prop))
   }
 
-  const saveScore = () => {
-    window.localStorage.setItem('score', score)
+  const saveScore = () => {    
+    persistor.flush()
+    console.log('flushed');
   }
   const resetScore = () => {
-    dispatch(setScore(0))
-    window.localStorage.removeItem('score')
+    dispatch(setScore(0))  
   }
 
   const lvlHandler = boxesNumber => {
