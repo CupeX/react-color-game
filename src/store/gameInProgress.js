@@ -72,4 +72,4 @@ export const {
   checkForRightColor,
 } = gameInProgress.actions
 
-export default gameInProgress
+export default gameInProgress.reducer

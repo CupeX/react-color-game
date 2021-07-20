@@ -31,4 +31,4 @@ export const {
   deleteCustomLevels,
 } = gameSettings.actions
 
-export default gameSettings
+export default gameSettings.reducer
