@@ -59,15 +59,17 @@ const gameInProgress = createSlice({
   },
 })
 
-export const setScore = gameInProgress.actions.setScore
-export const setTrueColor = gameInProgress.actions.setTrueColor
-export const setColors = gameInProgress.actions.setColors
-export const setBoxesNumber = gameInProgress.actions.setBoxesNumber
-export const attemptsIncrement = gameInProgress.actions.attemptsIncrement
-export const attemptsReset = gameInProgress.actions.attemptsReset
-export const setAllGenerated = gameInProgress.actions.setAllGenerated
-export const startNewGame = gameInProgress.actions.startNewGame
-export const useHint = gameInProgress.actions.useHint
-export const checkForRightColor = gameInProgress.actions.checkForRightColor
+export const {
+  setTrueColor,
+  setScore,
+  setColors,
+  setBoxesNumber,
+  attemptsIncrement,
+  attemptsReset,
+  setAllGenerated,
+  startNewGame,
+  useHint,
+  checkForRightColor,
+} = gameInProgress.actions
 
 export default gameInProgress

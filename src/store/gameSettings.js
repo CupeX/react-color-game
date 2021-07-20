@@ -25,9 +25,10 @@ const gameSettings = createSlice({
   },
 })
 
-export const setActiveColorDisplayFormat =
-  gameSettings.actions.setActiveColorDisplayFormat
-export const setCustomLevels = gameSettings.actions.setCustomLevels
-export const deleteCustomLevels = gameSettings.actions.deleteCustomLevels
+export const {
+  setActiveColorDisplayFormat,
+  setCustomLevels,
+  deleteCustomLevels,
+} = gameSettings.actions
 
 export default gameSettings
