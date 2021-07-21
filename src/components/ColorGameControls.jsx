@@ -8,7 +8,6 @@ import displayFormat from './displayFormat'
 import useGameSettings from '../hooks/useGameSettings'
 import useGameInProgress from '../hooks/useGameInProgress'
 import CustomLevelCreator from './CustomLevelCreator'
-import { persistor } from '../store/store'
 
 const ColorGameControls = () => {
   const dispatch = useDispatch()
@@ -29,10 +28,6 @@ const ColorGameControls = () => {
     dispatch(setActiveColorDisplayFormat(prop))
   }
 
-  const saveScore = () => {    
-    persistor.flush()
-    console.log('flushed');
-  }
   const resetScore = () => {
     dispatch(setScore(0))  
   }
@@ -48,10 +43,7 @@ const ColorGameControls = () => {
   return (
     <div className='col-4 vh-100'>
       <div className='d-flex justify-content-between border-bottom border-dark my-3 pb-3'>
-        <h2>score: {score}</h2>
-        <ButtonComponent onClick={() => saveScore()} color='success'>
-          save score
-        </ButtonComponent>
+        <h2>score: {score}</h2>       
         <ButtonComponent onClick={() => resetScore()} color='danger'>
           reset score
         </ButtonComponent>
