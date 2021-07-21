@@ -7,12 +7,13 @@ import useGameInProgress from '../hooks/useGameInProgress'
 const AppContainer = () => {
   const dispatch = useDispatch()
 
-  const { activeLvlBoxCount, setScore, allGenerated, setBoxesNumber } =
+  const { activeLvlBoxCount, allGenerated, setBoxesNumber, colors } =
     useGameInProgress()
 
   useEffect(() => {
-    dispatch(setBoxesNumber(activeLvlBoxCount))
-    dispatch(setScore(+window.localStorage.getItem('score')))
+    if (colors.length === 0) {
+      dispatch(setBoxesNumber(activeLvlBoxCount))
+    }
   }, [])
 
   return (
